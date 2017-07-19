@@ -1,0 +1,19 @@
+{
+  "name": "whisky-taste",
+  "version": "1.0.0",
+  "description": "Tasting reviews of whisky, powered by Play(Scala) & Riot.js.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Play",
+    "Scala",
+    "Riot"
+  ],
+  "author": "keicy",
+  "license": "ISC"
+}
