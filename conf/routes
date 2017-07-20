@@ -12,6 +12,7 @@
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
-#GET     /                            controllers.Assets.at(path="/public", file="index.html")
+# for using public/index.html
+# GET     /                            controllers.Assets.at(path="/public", file="index.html")
 
-GET    /    controllers.MountController.index
+#GET    /    controllers.MountController.index
