@@ -1,5 +1,4 @@
 import riot from 'riot'
-
 import store from './store.js'
 
 import './tags/app.tag'

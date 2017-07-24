@@ -1,18 +1,22 @@
+import route from 'riot-route'
+import store from '../store.js'
+import Constants from '../constants.js'
+
+import './new-taste.tag'
+import './case-one.tag'
+import './case-two.tag'
+import './underground.tag'
+
 <app>
   <content></content>
   <script>
-   import route from 'riot-route'
-
-   import store from '../store.js'
-
-   import './new-taste.tag'
-   import './case-one.tag'
-   
    route('/', () => riot.mount('content', 'new-taste', opts.data))
    route('/one', () => riot.mount('content', 'case-one'))
+   route('/two', () => riot.mount('content', 'case-two'))
+   route('/two/underground', () => riot.mount('content', 'underground'))
    route.start(true)
 
-   store.on('from-store', (data) => {
+   store.on(Constants.UPDATE_STORE, (data) => {
      this.update(data)
    })
   </script>
