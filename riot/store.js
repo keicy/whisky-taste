@@ -9,6 +9,19 @@ store.data = {
   whisky: [],
 }
 
+function setActionHandler (action, updateFn) {
+  ct.on(action, data => {
+    updateFn(data)
+    store.trigger(Constants.UPDATE_STORE, store.data)
+  })
+}
+
+setActionHandler(Action.POST_NEW_REVIEW, newReview => {
+  store.data.whisky.push(newReview)
+})
+
+/*
+
 store.update = () => {
   store.trigger(Constants.UPDATE_STORE, store.data)
 }
@@ -23,6 +36,7 @@ store.setActionResolver = (action, updateFn) => {
 store.setActionResolver(Action.POST_NEW_REVIEW, newReview => {
   store.data.whisky.push(newReview)
 })
+*/
 
 /*
 ct.on(Action.POST_NEW_REVIEW, (newReview) => {
