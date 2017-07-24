@@ -1,6 +1,6 @@
 import route from 'riot-route'
 import store from '../store.js'
-import Constants from '../constants.js'
+import StoreMessage from '../constants/store-message.js'
 
 import './new-taste.tag'
 import './case-one.tag'
@@ -16,7 +16,7 @@ import './underground.tag'
    route('/two/underground', () => riot.mount('content', 'underground'))
    route.start(true)
 
-   store.on(Constants.UPDATE_STORE, (data) => {
+   store.on(StoreMessage.UPDATE_STORE, (data) => {
      this.update(data)
    })
   </script>

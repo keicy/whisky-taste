@@ -1,5 +1,5 @@
 import riot from 'riot'
-import Action from './action.js'
+import Action from './constants/action.js'
 
 export default riot.observable({
   postNewReview (newReview) {

@@ -1,6 +1,6 @@
 import riot from 'riot'
-import Action from './action.js'
-import Constants from './constants.js'
+import Action from './constants/action.js'
+import StoreMessage from './constants/store-message.js'
 import ct from './controller.js'
 
 const store = riot.observable()
@@ -12,7 +12,7 @@ store.data = {
 function setActionHandler (action, updateFn) {
   ct.on(action, data => {
     updateFn(data)
-    store.trigger(Constants.UPDATE_STORE, store.data)
+    store.trigger(StoreMessage.UPDATE_STORE, store.data)
   })
 }
 
