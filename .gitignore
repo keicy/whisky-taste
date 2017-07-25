@@ -10,3 +10,4 @@ target
 node_modules/
 npm-debug.log
 bundle.js
+h2db.trace.db
