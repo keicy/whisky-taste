@@ -1,10 +1,14 @@
+import com.typesafe.config.ConfigFactory
+
+lazy val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
+
 lazy val root = (project in file("."))
   .enablePlugins(PlayScala)
   .settings(
     commonSettings,
     libraryDependencies ++= library,
-    byHandSlickCodeGenCommand <<= slickCodeGenTask // コンソールから `sbt gen-models` コマンドでモデルを手動で作成
-   ,sourceGenerators in Compile <+= slickCodeGenTask // コンパイル時に自動で実施される設定
+    byHandSlickCodeGenCommand <<= slickCodeGenTask // コンソールから `$ sbt gen-models` でモデルを手動で作成
+   // ,sourceGenerators in Compile <+= slickCodeGenTask // コンパイル時に自動で実施される設定 (ファイル修正のたびに走ってしまうので使用は見送り)
   )
 
 lazy val commonSettings = Seq(
@@ -23,22 +27,17 @@ lazy val library = Seq(
   "com.h2database" % "h2" % "1.4.196"
 )
 
+// DBのテーブルからモデルクラスのコードを自動生成する設定 //
 lazy val byHandSlickCodeGenCommand = TaskKey[Seq[File]]("gen-models")
 lazy val slickCodeGenTask = (baseDirectory, dependencyClasspath in Compile, runner in Compile, streams) map { (dir, cp, r, s) =>
-  val slickDriver = "slick.jdbc.H2Profile" // [for 3.2.x] 3.1.x の `slick.driver.H2Driver` からパッケージ名とオブジェクト名が変更された
-  // val slickDriver = "slick.driver.H2Driver" // [for 3.1.x]
-  val jdbcDriver = "org.h2.Driver"
-  val url = "jdbc:h2:./h2db;MODE=MYSQL;DB_CLOSE_DELAY=-1"
+  val slickDriver = conf.getString("slick.dbs.default.driver").dropRight(1)
+  val jdbcDriver = conf.getString("slick.dbs.default.db.driver")
+  val url = conf.getString("slick.dbs.default.db.url")
   val outputFolder = (dir / "app").getPath
   val pkg = "models"
-  val user = "sa"
-  val password = ""
+  val user = conf.getString("slick.dbs.default.db.user")
+  val password = conf.getString("slick.dbs.default.db.password")
   toError(r.run("slick.codegen.SourceCodeGenerator", cp.files, Seq(slickDriver, jdbcDriver, url, outputFolder, pkg, user, password), s.log))
   val fname = s"${outputFolder}/${pkg}/Tables.scala"
   Seq(file(fname))
-}
-
-lazy val hello = TaskKey[Unit]("greet")
-lazy val helloTask = baseDirectory map { (dir) =>
-  println(dir / "app")
 }
