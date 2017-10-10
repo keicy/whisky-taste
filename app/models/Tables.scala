@@ -58,38 +58,32 @@ trait Tables {
 
   /** Entity class storing rows of table Reviews
    *  @param reviewId Database column review_id SqlType(bigint), AutoInc, PrimaryKey
-   *  @param userId Database column user_id SqlType(bigint)
-   *  @param whiskyId Database column whisky_id SqlType(bigint)
-   *  @param postedDate Database column posted_date SqlType(date)
-   *  @param title Database column title SqlType(varchar), Length(50,true)
+   *  @param whiskyName Database column whisky_name SqlType(varchar), Length(50,true)
    *  @param score Database column score SqlType(tinyint), Default(10)
-   *  @param comment Database column comment SqlType(varchar), Length(1000,true) */
-  final case class ReviewsRow(reviewId: Long, userId: Long, whiskyId: Long, postedDate: java.sql.Date, title: String, score: Byte = 10, comment: Option[String])
+   *  @param comment Database column comment SqlType(varchar), Length(1000,true)
+   *  @param postedDate Database column posted_date SqlType(date) */
+  final case class ReviewsRow(reviewId: Long, whiskyName: String, score: Byte = 10, comment: Option[String], postedDate: java.sql.Date)
   /** GetResult implicit for fetching ReviewsRow objects using plain SQL queries */
-  implicit def GetResultReviewsRow(implicit e0: GR[Long], e1: GR[java.sql.Date], e2: GR[String], e3: GR[Byte], e4: GR[Option[String]]): GR[ReviewsRow] = GR{
+  implicit def GetResultReviewsRow(implicit e0: GR[Long], e1: GR[String], e2: GR[Byte], e3: GR[Option[String]], e4: GR[java.sql.Date]): GR[ReviewsRow] = GR{
     prs => import prs._
-    ReviewsRow.tupled((<<[Long], <<[Long], <<[Long], <<[java.sql.Date], <<[String], <<[Byte], <<?[String]))
+    ReviewsRow.tupled((<<[Long], <<[String], <<[Byte], <<?[String], <<[java.sql.Date]))
   }
   /** Table description of table reviews. Objects of this class serve as prototypes for rows in queries. */
   class Reviews(_tableTag: Tag) extends profile.api.Table[ReviewsRow](_tableTag, Some("public"), "reviews") {
-    def * = (reviewId, userId, whiskyId, postedDate, title, score, comment) <> (ReviewsRow.tupled, ReviewsRow.unapply)
+    def * = (reviewId, whiskyName, score, comment, postedDate) <> (ReviewsRow.tupled, ReviewsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(reviewId), Rep.Some(userId), Rep.Some(whiskyId), Rep.Some(postedDate), Rep.Some(title), Rep.Some(score), comment).shaped.<>({r=>import r._; _1.map(_=> ReviewsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get, _7)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(reviewId), Rep.Some(whiskyName), Rep.Some(score), comment, Rep.Some(postedDate)).shaped.<>({r=>import r._; _1.map(_=> ReviewsRow.tupled((_1.get, _2.get, _3.get, _4, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column review_id SqlType(bigint), AutoInc, PrimaryKey */
     val reviewId: Rep[Long] = column[Long]("review_id", O.AutoInc, O.PrimaryKey)
-    /** Database column user_id SqlType(bigint) */
-    val userId: Rep[Long] = column[Long]("user_id")
-    /** Database column whisky_id SqlType(bigint) */
-    val whiskyId: Rep[Long] = column[Long]("whisky_id")
-    /** Database column posted_date SqlType(date) */
-    val postedDate: Rep[java.sql.Date] = column[java.sql.Date]("posted_date")
-    /** Database column title SqlType(varchar), Length(50,true) */
-    val title: Rep[String] = column[String]("title", O.Length(50,varying=true))
+    /** Database column whisky_name SqlType(varchar), Length(50,true) */
+    val whiskyName: Rep[String] = column[String]("whisky_name", O.Length(50,varying=true))
     /** Database column score SqlType(tinyint), Default(10) */
     val score: Rep[Byte] = column[Byte]("score", O.Default(10))
     /** Database column comment SqlType(varchar), Length(1000,true) */
     val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(1000,varying=true))
+    /** Database column posted_date SqlType(date) */
+    val postedDate: Rep[java.sql.Date] = column[java.sql.Date]("posted_date")
   }
   /** Collection-like TableQuery object for table Reviews */
   lazy val Reviews = new TableQuery(tag => new Reviews(tag))
