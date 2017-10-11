@@ -14,7 +14,8 @@ lazy val root = (project in file("."))
 lazy val commonSettings = Seq(
   name := "whisky-taste",
   version := "1.0",
-  scalaVersion := "2.11.7"
+  scalaVersion := "2.11.7",
+  ensimeScalaVersion in ThisBuild := "2.11.7"
 )
 
 lazy val library = Seq(

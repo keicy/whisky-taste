@@ -16,3 +16,6 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # GET     /                            controllers.Assets.at(path="/public", file="index.html")
 
 GET    /    controllers.MountController.index
+
+GET    /reviews         controllers.ReviewsController.all
+POST   /reviews         controllers.ReviewsController.create

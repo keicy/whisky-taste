@@ -42,11 +42,22 @@ sbt run
 
 ### バージョン
 
-| ツール | 役割 | 補足 |
+| ツール | バージョン | 補足 |
 |:---|:---|:---|
+| Play | 2.5.10 |  |
+| SBT | 0.13.11 |  |
+| Riot | 3.6.1 |  |
+| Play-slick | 2.1.0 |  |
+| Slick | 3.2.0 |  |
 |  |  |  |
 |  |  |  |
 
+## 参考情報
+
+### Slick
+
+- http://krrrr38.github.io/slick-doc-ja/v3.0.out/ORM%E3%81%8B%E3%82%89Slick%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E4%BA%BA%E3%81%B8.html
+- 
 
 
 This is your new Play application
