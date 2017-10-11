@@ -8,8 +8,8 @@ import scala.concurrent.{ Future, ExecutionContext }
 import models.Tables.{ Reviews, ReviewsRow }
 
 @Singleton
-class ReviewsDAO @Inject() (
-  val dbConfigProvider: DatabaseConfigProvider,
+class ReviewsDAO @Inject()(
+  dbConfigProvider: DatabaseConfigProvider,
   implicit val ec: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
   import driver.api._

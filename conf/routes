@@ -17,5 +17,5 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET    /    controllers.MountController.index
 
-GET    /reviews         controllers.ReviewsController.all
-POST   /reviews         controllers.ReviewsController.create
+GET    /json/reviews         controllers.ReviewsController.all
+POST   /json/reviews         controllers.ReviewsController.create
