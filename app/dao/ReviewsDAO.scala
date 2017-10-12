@@ -9,10 +9,10 @@ import models.Tables.{ Reviews, ReviewsRow }
 
 @Singleton
 class ReviewsDAO @Inject()(
-  dbConfigProvider: DatabaseConfigProvider,
+  val dbConfigProvider: DatabaseConfigProvider,
   implicit val ec: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
-  import driver.api._
+  import profile.api._
 
   def all(): Future[Seq[ReviewsRow]] = db.run(Reviews.result)
   def create(review: ReviewsRow): Future[String] = db.run(Reviews += review)

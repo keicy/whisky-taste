@@ -11,12 +11,8 @@ import dao.ReviewsDAO
 
 @Singleton
 class ReviewsController @Inject()(
-  reviewsDAO: ReviewsDAO
+  val reviewsDAO: ReviewsDAO
 ) extends Controller {
   def all = TODO
   def create = TODO
-}
-
-object ReviewsController {
-  implicit val x = Json.format[ReviewsRow]
 }
