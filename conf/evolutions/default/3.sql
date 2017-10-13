@@ -14,5 +14,9 @@ CREATE TABLE Reviews (
     , posted_date DATE DEFAULT CURRENT_DATE() NOT NULL
 );
 
+INSERT INTO Reviews (whisky_name, score, comment) VALUES ('Knockando 21 yo 1990', 16, 'I love it! Aftertaste sustains long long long...');
+INSERT INTO Reviews (whisky_name, score, comment) VALUES ('GlenDronach 21 yo Parliament', 16, 'Smooth and rich! Chocolate, wood, spicy.');
+INSERT INTO Reviews (whisky_name, score, comment) VALUES ('Auchentoshan 12 yo', 13, 'My favorite daily bottle! Pretty good aroma. Smooth, woodiness, syrup, marmalade.');
+
 # --- !Downs
 DROP TABLE Reviews;
