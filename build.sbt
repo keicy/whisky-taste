@@ -25,10 +25,12 @@ lazy val library = Seq(
   "com.typesafe.play" %% "play-slick" % "2.1.0",
   "com.typesafe.play" %% "play-slick-evolutions" % "2.1.0",
   "com.typesafe.slick" %% "slick-codegen" % "3.2.0",
+  "org.postgresql" % "postgresql" % "9.4-1206-jdbc42",
+  "mysql" % "mysql-connector-java" % "5.1.44",
   "com.h2database" % "h2" % "1.4.196"
 )
 
-// DBのテーブルからモデルクラスのコードを自動生成する設定 //
+/* DBのテーブルからモデルクラスのコードを自動生成する設定 */
 lazy val byHandSlickCodeGenCommand = TaskKey[Seq[File]]("gen-models")
 lazy val slickCodeGenTask = (baseDirectory, dependencyClasspath in Compile, runner in Compile, streams) map { (dir, cp, r, s) =>
   val slickDriver = conf.getString("slick.dbs.default.driver").dropRight(1)

@@ -66,9 +66,9 @@ class ReviewsController @Inject()(
 object ReviewsController {
   //implicit val x = Json.format[ReviewsRow] // 自動生成モデルはパス依存型のためマクロが正しく解決できず現状使えない
   implicit val locationFormat: Format[ReviewsRow] = (
-    (__ \ 'reviewId).format[Long] ~
+    (__ \ 'reviewId).format[Int] ~
     (__ \ 'whiskyName).format[String] ~
-    (__ \ 'score).format[Byte] ~
+    (__ \ 'score).format[Short] ~
     (__ \ 'comment).formatNullable[String] ~
     (__ \ 'postedDate).format[Date]
   )(ReviewsRow.apply, unlift(ReviewsRow.unapply))
