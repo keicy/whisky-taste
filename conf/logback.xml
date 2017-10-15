@@ -38,4 +38,10 @@
     <appender-ref ref="ASYNCSTDOUT" />
   </root>
 
+  <!-- Slick の発行クエリ文のログ表示設定 -->
+  <logger name="slick.jdbc" level="DEBUG" />
+  <logger name="org.jdbcdslog.ConnectionLogger" level="DEBUG"  />
+  <logger name="org.jdbcdslog.StatementLogger"  level="DEBUG" />
+  <logger name="org.jdbcdslog.ResultSetLogger"  level="DEBUG"  />
+
 </configuration>

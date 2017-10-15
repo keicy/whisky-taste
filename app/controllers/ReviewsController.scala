@@ -26,17 +26,22 @@ class ReviewsController @Inject()(
 
   // 1
   def create = Action.async(json) { implicit req =>
-    Logger.debug(s"POST Data = ${req.body}")
     req.body.validate[ReviewsRow].fold(
-      errors => Future(
+      errors => {
+        Logger.debug(s"POST Data = ${req.body}. Bad Request.")
+        Future(
         BadRequest(Json.obj(
           "status" -> "Bad Request",
           "message" -> JsError.toJson(errors)))
-      ),
-      review => reviewsDAO.create(review).map { msg =>
-        Ok(Json.obj(
-          "status" -> "OK",
-          "message" -> msg))
+        )
+      },
+      review => {
+        Logger.debug(s"POST Data = ${req.body}. Try to reate new review.")
+        reviewsDAO.create(review).map { msg =>
+          Ok(Json.obj(
+            "status" -> "OK",
+            "message" -> msg))
+        }
       }
     )
   }

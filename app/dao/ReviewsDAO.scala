@@ -20,9 +20,12 @@ class ReviewsDAO @Inject()(
 
   def all(): Future[Seq[ReviewsRow]] = db.run(reviews.result)
 
-  def create(review: ReviewsRow): Future[String] = db.run(reviews += review)
-    .map(_ => "Review successfully added.")
-    .recover {case ex: Exception => ex.getCause.getMessage}
+  def create(review: ReviewsRow): Future[String] = {
+    Logger.debug(s"Insert Data = ${review}.")
+    db.run(reviews += review)
+      .map(_ => "Review successfully added.")
+      .recover {case ex: Exception => ex.getCause.getMessage}
+  }
 }
 
 object ReviewsDAO {
@@ -44,7 +47,7 @@ object ReviewsDAO {
     val whiskyName: Rep[String] = column[String]("whisky_name", O.Length(100,varying=true))
     val score: Rep[Short] = column[Short]("score", O.Default(10))
     val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(200,varying=true), O.Default(None))
-    val postedDate: Rep[Option[LocalDate]] = column[Option[LocalDate]]("posted_date", O.Default(None))
+    val postedDate: Rep[Option[LocalDate]] = column[Option[LocalDate]]("posted_date", O.AutoInc ,O.Default(None)) // DB側で値が自動挿入されるので `` を付与してクエリ文に含まれないようにする
   }
 
   // 素のSQL文発行時のための変換定義
