@@ -6,18 +6,45 @@ import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.JdbcProfile
 import scala.concurrent.{ Future, ExecutionContext }
 
-import models.Tables.{ Reviews, ReviewsRow }
+import models.Models.ReviewsRow
 
 @Singleton
 class ReviewsDAO @Inject()(
   val dbConfigProvider: DatabaseConfigProvider,
   implicit val ec: ExecutionContext
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
-  import driver.api._
+  import profile.api._
+  import ReviewsDAO._
 
-  def all(): Future[Seq[ReviewsRow]] = db.run(Reviews.result)
+  def all(): Future[Seq[ReviewsRow]] = db.run(reviews.result)
 
-  def create(review: ReviewsRow): Future[String] = db.run(Reviews += review)
+  def create(review: ReviewsRow): Future[String] = db.run(reviews += review)
     .map(_ => "Review successfully added.")
     .recover {case ex: Exception => ex.getCause.getMessage}
+}
+
+object ReviewsDAO {
+  //import slick.model.ForeignKeyAction //TODO いらない?一旦OUT.
+  import slick.jdbc.{GetResult => GR}
+  val profile = slick.jdbc.PostgresProfile
+  import profile.api._
+
+  class Reviews(_tableTag: Tag) extends profile.api.Table[ReviewsRow](_tableTag, "reviews") {
+    def * = (reviewId, whiskyName, score, comment, postedDate) <> (ReviewsRow.tupled, ReviewsRow.unapply)
+    def ? = (Rep.Some(reviewId), Rep.Some(whiskyName), Rep.Some(score), comment, Rep.Some(postedDate)).shaped.<>({r=>import r._; _1.map(_=> ReviewsRow.tupled((_1.get, _2.get, _3.get, _4, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    val reviewId: Rep[Int] = column[Int]("review_id", O.AutoInc, O.PrimaryKey)
+    val whiskyName: Rep[String] = column[String]("whisky_name", O.Length(100,varying=true))
+    val score: Rep[Short] = column[Short]("score", O.Default(10))
+    val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(200,varying=true), O.Default(None))
+    val postedDate: Rep[java.sql.Date] = column[java.sql.Date]("posted_date")
+  }
+
+  // 素のSQL文発行時のための変換定義
+  implicit def GetResultReviewsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Short], e3: GR[Option[String]], e4: GR[java.sql.Date]): GR[ReviewsRow] = GR{
+    prs => import prs._
+    ReviewsRow.tupled((<<[Int], <<[String], <<[Short], <<?[String], <<[java.sql.Date]))
+  }
+
+  lazy val reviews = new TableQuery(tag => new Reviews(tag))
 }

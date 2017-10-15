@@ -9,7 +9,7 @@ import play.api.mvc.BodyParsers.parse.json
 import scala.concurrent.{ Future, ExecutionContext }
 import java.sql.Date
 
-import models.Tables._
+import models.Models.ReviewsRow
 import dao.ReviewsDAO
 
 @Singleton
