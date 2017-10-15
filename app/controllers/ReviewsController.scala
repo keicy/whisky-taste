@@ -7,7 +7,7 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.mvc.BodyParsers.parse.json
 import scala.concurrent.{ Future, ExecutionContext }
-import java.sql.Date
+import java.time.{LocalDate}
 
 import models.Models.ReviewsRow
 import dao.ReviewsDAO
@@ -17,7 +17,8 @@ class ReviewsController @Inject()(
   val reviewsDAO: ReviewsDAO,
   implicit val ec: ExecutionContext
 ) extends Controller {
-  import ReviewsController._
+  //import ReviewsController._
+  implicit val locationFormat = Json.format[ReviewsRow]
 
   def all = Action.async { implicit req =>
     reviewsDAO.all().map( reviews => Ok(Json.obj("reviews" -> reviews)))
@@ -64,12 +65,14 @@ class ReviewsController @Inject()(
 }
 
 object ReviewsController {
-  //implicit val x = Json.format[ReviewsRow] // 自動生成モデルはパス依存型のためマクロが正しく解決できず現状使えない
+  implicit val locationFormat = Json.format[ReviewsRow]
+  /*
   implicit val locationFormat: Format[ReviewsRow] = (
-    (__ \ 'reviewId).format[Int] ~
+    (__ \ 'reviewId).formatNullable[Int] ~
     (__ \ 'whiskyName).format[String] ~
     (__ \ 'score).format[Short] ~
     (__ \ 'comment).formatNullable[String] ~
-    (__ \ 'postedDate).format[Date]
+    (__ \ 'postedDate).formatNullable[LocalDate]
   )(ReviewsRow.apply, unlift(ReviewsRow.unapply))
+   */
 }
