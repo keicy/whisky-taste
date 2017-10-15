@@ -69,8 +69,10 @@ class ReviewsController @Inject()(
 
 }
 
-object ReviewsController {
-  implicit val locationFormat = Json.format[ReviewsRow]
+//object ReviewsController {
+  // なぜかこちらに書くとclassでimportできないのでclassに直接書いた.下記省略せず書くとimportできる.
+  // implicit val locationFormat = Json.format[ReviewsRow]
+
   /*
   implicit val locationFormat: Format[ReviewsRow] = (
     (__ \ 'reviewId).formatNullable[Int] ~
@@ -80,4 +82,4 @@ object ReviewsController {
     (__ \ 'postedDate).formatNullable[LocalDate]
   )(ReviewsRow.apply, unlift(ReviewsRow.unapply))
    */
-}
+//}
