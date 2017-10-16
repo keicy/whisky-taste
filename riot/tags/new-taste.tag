@@ -2,38 +2,41 @@ import ct from '../controller.js'
 
 <new-taste>
   <table>
-    <tr each={ opts.whisky }>
-      <td>{ name }</td>
-      <td>{ date }</td>
+    <tr each={ opts.reviews }>
+      <td>{ whiskyName }</td>
+      <td>{ score }</td>
       <td>{ comment }</td>
     </tr>
   </table>
   
   <form onsubmit={ postNewReview }>
     <p>
-      <label>銘柄
-        <input
-            type="text"
-            name="name"
-            onchange={ onName }>
+      <label>ボトル名
+        <input ref="whiskyName"
+               type="text"
+               name="whiskyName"
+               onchange={ onName }>
       </label>
     </p>
 
     <p>
-      <label>日付
-        <input
-            type="date"
-            name="date"
-            onchange={ onDate }>
+      <label>点数
+        <input ref="score"
+               type="number"
+               name="score"
+               min="1"
+               max="20"
+               value="10"
+               onchange={ onDate }>
       </label>
     </p>
 
     <p>
       <label>テイスティングコメント
-        <input
-            type="text"
-            name="comment"
-            onchange={ onComment }>
+        <input ref="comment"
+               type="text"
+               name="comment"
+               onchange={ onComment }>
       </label>
     </p>
 
@@ -46,25 +49,12 @@ import ct from '../controller.js'
   </form>
 
   <script>
-   var name
-   var date
-   var comment
-
-   onName(e) {
-     name = e.target.value
-   }
-   onDate(e) {
-     date = e.target.value
-   }
-   onComment(e) {
-     comment = e.target.value
-   }
    postNewReview(e) {
      e.preventDefault()
      ct.postNewReview({
-       name,
-       date,
-       comment,
+       whiskyName: this.refs.whiskyName.value,
+       score: this.refs.score.value,
+       comment: this.refs.comment.value,
      })
    }
   </script>

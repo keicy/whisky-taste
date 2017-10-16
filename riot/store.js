@@ -6,7 +6,7 @@ import ct from './controller.js'
 const store = riot.observable()
 
 store.data = {
-  whisky: [],
+  reviews: [],
 }
 
 function setActionHandler (action, updateFn) {
@@ -17,7 +17,7 @@ function setActionHandler (action, updateFn) {
 }
 
 setActionHandler(Action.POST_NEW_REVIEW, newReview => {
-  store.data.whisky.push(newReview)
+  store.data.reviews.push(newReview)
 })
 
 /*
