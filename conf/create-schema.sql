@@ -1,1 +1,0 @@
-CREATE DATABASE IF NOT EXISTS whisky_taste CHARSET utf8mb4;
