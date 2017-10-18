@@ -1,4 +1,4 @@
-import ct from '../controller.js'
+import ac from '../action-creator.js'
 
 <new-taste>
   <table>
@@ -42,16 +42,16 @@ import ct from '../controller.js'
 
     <p>
       <input
-          type="submit"
-          name="taste"
-          value="投稿する">
+        type="submit"
+        name="taste"
+        value="投稿する">
     </p>
   </form>
 
   <script>
    postNewReview(e) {
      e.preventDefault()
-     ct.postNewReview({
+     ac.postNewReview({
        whiskyName: this.refs.whiskyName.value,
        score: this.refs.score.value,
        comment: this.refs.comment.value,

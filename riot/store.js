@@ -1,5 +1,5 @@
 import Action from './constants/action.js'
-import ct from './controller.js'
+import ac from './action-creator.js'
 
 const data = {
   reviews: [],
@@ -7,7 +7,7 @@ const data = {
 
 // TODO 可変長引数対応 `...data`
 function setActionHandler (action, updateFn) {
-  ct.on(action, data => {
+  ac.on(action, data => {
     updateFn(data)
   })
 }
