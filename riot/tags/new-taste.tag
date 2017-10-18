@@ -56,8 +56,13 @@ import ac from '../action-creator.js'
        score: this.refs.score.value,
        comment: this.refs.comment.value,
      })
-     // this.refs.whiskyName.value = '' // 的なコードで入力欄をリセットする
-     // http://riotjs.com/ja/guide/#カスタムタグの例
+     resetForm()
+   }
+   
+   const resetForm = () => {
+     this.refs.whiskyName.value = ''
+     this.refs.score.value = 10
+     this.refs.comment.value = ''
    }
   </script>
 </new-taste>
