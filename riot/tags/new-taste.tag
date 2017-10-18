@@ -56,6 +56,8 @@ import ct from '../controller.js'
        score: this.refs.score.value,
        comment: this.refs.comment.value,
      })
+     // this.refs.whiskyName.value = '' // 的なコードで入力欄をリセットする
+     // http://riotjs.com/ja/guide/#カスタムタグの例
    }
   </script>
 </new-taste>
