@@ -7,7 +7,6 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.mvc.BodyParsers.parse.json
 import scala.concurrent.{ Future, ExecutionContext }
-import java.time.{LocalDate}
 
 import models.Models.ReviewsRow
 import dao.ReviewsDAO

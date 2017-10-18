@@ -25,6 +25,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "riot": "^3.6.1"
   },
   "devDependencies": {
