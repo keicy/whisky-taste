@@ -49,6 +49,8 @@ import ac from '../action-creator.js'
   </form>
 
   <script>
+    console.log(opts)
+    
    postNewReview(e) {
      e.preventDefault()
      ac.postNewReview({
