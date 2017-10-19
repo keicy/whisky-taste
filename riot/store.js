@@ -1,30 +1,60 @@
 import riot from 'riot'
+import ax from 'axios'
 import Action from './constants/action.js'
 import ac from './action-creator.js'
 import StoreMessage from './constants/store-message.js'
 
+/* TODO オブジェクトとして定義したほうが良さそう */
+
 const store = riot.observable()
 
-store.data = {
-  reviews: [],
-}
+// store.data = {}
 
-function setActionHandler (action, updateFn) {
+/* init data */
+// 多分ここが非同期なので初期化がうまくいっていない...
+//
+// 1. 初期化完了したら trigger で通知する
+// 2. ルーターがマウントされた時にアクションを受けて初期化する
+
+function setActionHandler (
+  action,
+  storeMsg,
+  updateFn
+) {
   ac.on(action, data => {
     updateFn(data)
-    store.trigger(StoreMessage.UPDATE_STORE, store.data)
+    store.trigger(storeMsg, store.data)
   })
 }
 
-setActionHandler(Action.GET_ALL_REVIEWS, reviews => {
-  store.data.reviews = reviews
-})
+setActionHandler(
+  Action.INIT_STORE,
+  StoreMessage.STORE_INITED,
+  initData => {
+    store.data = initData
+  })
 
-setActionHandler(Action.POST_NEW_REVIEW, newReview => {
-  store.data.reviews.push(newReview)
-})
+setActionHandler(
+  Action.GET_ALL_REVIEWS,
+  StoreMessage.UPDATE_STORE,
+  reviews => {
+    store.data.reviews = reviews
+  })
+
+setActionHandler(
+  Action.POST_NEW_REVIEW,
+  StoreMessage.UPDATE_STORE,
+  newReview => {
+    store.data.reviews.push(newReview)
+  })
 
 export default store
+
+
+
+
+
+
 
 // var data = {
 //   reviews: [],

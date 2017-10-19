@@ -2,7 +2,7 @@ import ac from '../action-creator.js'
 
 <new-taste>
   <table>
-    <tr each={ opts.reviews }>
+    <tr each={ this.reviews }>
       <td>{ whiskyName }</td>
       <td>{ score }</td>
       <td>{ comment }</td>
@@ -49,18 +49,27 @@ import ac from '../action-creator.js'
   </form>
 
   <script>
-    console.log(opts)
-    
-   postNewReview(e) {
-     e.preventDefault()
-     ac.postNewReview({
-       whiskyName: this.refs.whiskyName.value,
-       score: this.refs.score.value,
-       comment: this.refs.comment.value,
-     })
-     resetForm()
-   }
+   import StoreMessage from '../constants/store-message.js'
+
+   this.store = opts.store
+   const self = this
+   this.reviews = this.store.data.reviews
+
+   this.store.on(StoreMessage.STORE_UPDATED, (data) => {
+     self.reviews = data.reviews
+     self.update()
+   })
    
+   //    this.postNewReview = (e) => {
+   //     e.preventDefault()
+   //     ac.postNewReview({
+   //       whiskyName: this.refs.whiskyName.value,
+   //       score: this.refs.score.value,
+   //       comment: this.refs.comment.value,
+   //     })
+   //     resetForm()
+   //    }
+
    const resetForm = () => {
      this.refs.whiskyName.value = ''
      this.refs.score.value = 10

@@ -24,8 +24,7 @@ class MountController @Inject()(
       reviews <- reviewsDAO.all()
     } yield {
       Ok(Json.obj(
-        "data" -> Json.obj(
-          "reviews" -> reviews)
+        "reviews" -> reviews
       ))
     }
   }
