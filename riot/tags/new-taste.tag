@@ -52,28 +52,34 @@ import ac from '../action-creator.js'
    import StoreMessage from '../constants/store-message.js'
 
    this.store = opts.store
-   const self = this
-   this.reviews = this.store.data.reviews
 
-   this.store.on(StoreMessage.STORE_UPDATED, (data) => {
-     self.reviews = data.reviews
-     self.update()
-   })
-   
-   //    this.postNewReview = (e) => {
-   //     e.preventDefault()
-   //     ac.postNewReview({
-   //       whiskyName: this.refs.whiskyName.value,
-   //       score: this.refs.score.value,
-   //       comment: this.refs.comment.value,
-   //     })
-   //     resetForm()
-   //    }
+   setReviews() {
+     this.reviews = this.store.data.reviews
+   }
 
-   const resetForm = () => {
+   updateReviews() {
+     this.setReviews()
+     this.update()
+   }
+
+   resetForm() {
      this.refs.whiskyName.value = ''
      this.refs.score.value = 10
      this.refs.comment.value = ''
    }
+
+   postNewReview(e) {
+     e.preventDefault()
+     ac.postNewReview({
+       whiskyName: this.refs.whiskyName.value,
+       score: parseInt(this.refs.score.value),
+       comment: this.refs.comment.value,
+     })
+       this.resetForm()
+   }
+
+   this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
+
+   this.setReviews() // データ初期化
   </script>
 </new-taste>

@@ -20,11 +20,15 @@ class ReviewsDAO @Inject()(
 
   def all(): Future[Seq[ReviewsRow]] = db.run(reviews.result)
 
-  def create(review: ReviewsRow): Future[String] = {
+  def create(review: ReviewsRow): Future[ReviewsRow] = {
     Logger.debug(s"Insert Data = ${review}.")
-    db.run(reviews += review)
-      .map(_ => "Review successfully added.")
-      .recover {case ex: Exception => ex.getCause.getMessage}
+    val newReview = (
+      reviews returning reviews.map(_.reviewId)
+        into ((review, reviewId) => review.copy(reviewId = reviewId))
+    ) += review
+    db.run(newReview)
+      //.map(_ => _)
+      //.recover {case ex: Exception => ex.getCause.getMessage}
   }
 }
 

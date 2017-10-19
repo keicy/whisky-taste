@@ -12,13 +12,15 @@ export default riot.observable({
 
   getAllReviews () {
     ax.get('/reviews')
-      .then((reviews) => {
-        this.trigger(Action.GET_ALL_REVIEWS, reviews.data.reviews)
+      .then((res) => {
+        this.trigger(Action.GET_ALL_REVIEWS, res.data.reviews)
       })
   },
 
   postNewReview (newReview) {
-    // TODO ここでAPI通信しDBに登録する
-    this.trigger(Action.POST_NEW_REVIEW, newReview)
+    ax.post('/reviews', newReview)
+      .then((res) => {
+        this.trigger(Action.POST_NEW_REVIEW, res.data.newReview)
+      })
   },
 })

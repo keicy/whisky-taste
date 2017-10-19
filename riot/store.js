@@ -8,14 +8,6 @@ import StoreMessage from './constants/store-message.js'
 
 const store = riot.observable()
 
-// store.data = {}
-
-/* init data */
-// 多分ここが非同期なので初期化がうまくいっていない...
-//
-// 1. 初期化完了したら trigger で通知する
-// 2. ルーターがマウントされた時にアクションを受けて初期化する
-
 function setActionHandler (
   action,
   storeMsg,
@@ -23,7 +15,7 @@ function setActionHandler (
 ) {
   ac.on(action, data => {
     updateFn(data)
-    store.trigger(storeMsg, store.data)
+    store.trigger(storeMsg)
   })
 }
 
@@ -34,18 +26,21 @@ setActionHandler(
     store.data = initData
   })
 
+/*
 setActionHandler(
   Action.GET_ALL_REVIEWS,
-  StoreMessage.UPDATE_STORE,
+  StoreMessage.REVIEWS_UPDATED,
   reviews => {
     store.data.reviews = reviews
   })
+ */
 
 setActionHandler(
   Action.POST_NEW_REVIEW,
-  StoreMessage.UPDATE_STORE,
+  StoreMessage.REVIEWS_UPDATED,
   newReview => {
     store.data.reviews.push(newReview)
+    console.log(store.data.reviews)
   })
 
 export default store

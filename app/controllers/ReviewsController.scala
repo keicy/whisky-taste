@@ -36,10 +36,9 @@ class ReviewsController @Inject()(
       },
       review => {
         Logger.debug(s"POST Data = ${req.body}. Try to reate new review.")
-        reviewsDAO.create(review).map { msg =>
+        reviewsDAO.create(review).map { review =>
           Ok(Json.obj(
-            "status" -> "OK",
-            "message" -> msg))
+            "newReview" -> review))
         }
       }
     )
