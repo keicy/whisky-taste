@@ -1,14 +1,6 @@
 import ac from '../action-creator.js'
 
-<new-taste>
-  <table>
-    <tr each={ reviews }>
-      <td>{ whiskyName }</td>
-      <td>{ score }</td>
-      <td>{ comment }</td>
-    </tr>
-  </table>
-  
+<review-form>
   <form onsubmit={ postNewReview }>
     <p>
       <label>ボトル名
@@ -48,21 +40,7 @@ import ac from '../action-creator.js'
              value="投稿する">
     </p>
   </form>
-
   <script>
-   import StoreMessage from '../constants/store-message.js'
-
-   this.store = opts.store
-
-   setReviews() {
-     this.reviews = this.store.data.reviews
-   }
-
-   updateReviews() {
-     this.setReviews()
-     this.update()
-   }
-
    initScore() {
      this.score = 10
    }
@@ -92,10 +70,7 @@ import ac from '../action-creator.js'
      this.resetForm()
    }
 
-   this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
-
    /* データ初期化 */
-   this.setReviews()
-   this.initScore()
+   this.initScore()   
   </script>
-</new-taste>
+</review-form>
