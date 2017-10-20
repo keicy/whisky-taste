@@ -22,21 +22,7 @@ class ReviewsDAO @Inject()(
 
   def create(review: ReviewsRow): Future[ReviewsRow] = {
     Logger.debug(s"Insert Data = ${review}.")
-
-    val newReview = reviews returning reviews += review
-
-// returning でデータそのものを取得しておけばinto節で好きなデータを取得できそう
-//    val newReview =
-//      (reviews returning reviews into (
-//       (review, newReview) => review.copy(reviewId = newReview.reviewId)))
-
-      //    val newReview = (
-//      reviews returning (reviews.map(x => (x.reviewId, x.postedDate))
-//        into ((review, reviewId) => review.copy(reviewId = reviewId))
-//    ) += review
-    db.run(newReview)
-      //.map(_ => _)
-      //.recover {case ex: Exception => ex.getCause.getMessage}
+    db.run(reviews returning reviews += review)
   }
 }
 
