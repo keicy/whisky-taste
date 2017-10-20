@@ -1,48 +1,43 @@
 import riot from 'riot'
+import ax from 'axios'
 import Action from './constants/action.js'
+import ac from './action-creator.js'
 import StoreMessage from './constants/store-message.js'
-import ct from './controller.js'
+
+/* TODO オブジェクトとして定義したほうが良いかも？ */
 
 const store = riot.observable()
 
-store.data = {
-  reviews: [],
-}
-
-function setActionHandler (action, updateFn) {
-  ct.on(action, data => {
+function setActionHandler (
+  action,
+  storeMsg,
+  updateFn
+) {
+  ac.on(action, data => {
     updateFn(data)
-    store.trigger(StoreMessage.UPDATE_STORE, store.data)
+    store.trigger(storeMsg)
   })
 }
 
-setActionHandler(Action.POST_NEW_REVIEW, newReview => {
-  store.data.reviews.push(newReview)
-})
+setActionHandler(
+  Action.INIT_STORE,
+  StoreMessage.STORE_INITED,
+  initData => { store.data = initData }
+)
 
 /*
-
-store.update = () => {
-  store.trigger(Constants.UPDATE_STORE, store.data)
-}
-
-store.setActionResolver = (action, updateFn) => {
-  ct.on(action, data => {
-    updateFn(data)
-    store.update()
+setActionHandler(
+  Action.GET_ALL_REVIEWS,
+  StoreMessage.REVIEWS_UPDATED,
+  reviews => {
+    store.data.reviews = reviews
   })
-}
+ */
 
-store.setActionResolver(Action.POST_NEW_REVIEW, newReview => {
-  store.data.whisky.push(newReview)
-})
-*/
-
-/*
-ct.on(Action.POST_NEW_REVIEW, (newReview) => {
-  store.data.whisky.push(newReview)
-  store.update() // 高階関数による共通化↑
-})
-*/
+setActionHandler(
+  Action.POST_NEW_REVIEW,
+  StoreMessage.REVIEWS_UPDATED,
+  newReview => store.data.reviews.push(newReview)
+)
 
 export default store

@@ -1,7 +1,9 @@
-import riot from 'rollup-plugin-riot'
-import nodeResolve from 'rollup-plugin-node-resolve'
+import resolve from 'rollup-plugin-node-resolve'
+import json from 'rollup-plugin-json'
 import commonjs from 'rollup-plugin-commonjs'
+import replace from 'rollup-plugin-replace'
 import buble from 'rollup-plugin-buble'
+import riot from 'rollup-plugin-riot'
 import postcss from 'postcss'
 import postcssCssnext from 'postcss-cssnext'
 
@@ -12,14 +14,19 @@ export default {
     riot({
       style: 'cssnext',
       parsers: {
-        css: { cssnext }
-      }
+        css: { cssnext },
+      },
     }),
-    nodeResolve({ jsnext: true }),
+    resolve({
+      jsnext: true,
+      browser: true,
+    }),
+    replace({'process.env.NODE_ENV': JSON.stringify('production')}),
     commonjs(),
-    buble()
+    json(),
+    buble(),
   ],
-  format: 'iife'
+  format: 'iife',
 }
 
 /**

@@ -20,11 +20,9 @@ class ReviewsDAO @Inject()(
 
   def all(): Future[Seq[ReviewsRow]] = db.run(reviews.result)
 
-  def create(review: ReviewsRow): Future[String] = {
+  def create(review: ReviewsRow): Future[ReviewsRow] = {
     Logger.debug(s"Insert Data = ${review}.")
-    db.run(reviews += review)
-      .map(_ => "Review successfully added.")
-      .recover {case ex: Exception => ex.getCause.getMessage}
+    db.run(reviews returning reviews += review)
   }
 }
 

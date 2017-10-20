@@ -7,7 +7,6 @@ import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.mvc.BodyParsers.parse.json
 import scala.concurrent.{ Future, ExecutionContext }
-import java.time.{LocalDate}
 
 import models.Models.ReviewsRow
 import dao.ReviewsDAO
@@ -37,10 +36,9 @@ class ReviewsController @Inject()(
       },
       review => {
         Logger.debug(s"POST Data = ${req.body}. Try to reate new review.")
-        reviewsDAO.create(review).map { msg =>
+        reviewsDAO.create(review).map { review =>
           Ok(Json.obj(
-            "status" -> "OK",
-            "message" -> msg))
+            "newReview" -> review))
         }
       }
     )

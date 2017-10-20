@@ -68,6 +68,14 @@ sbt run
 | コンソール | `sbt` > 'h2-browser' | SBTコンソール内から実行しないと正常起動できない（`sbt h2-browser` ではダメ） |
 |  |  |  |
 
+### Postgres GUI
+
+```
+cd ~/.pgadmin4 && source bin/activate # virtual environment にログイン
+python lib/python2.7/site-packages/pgadmin4/pgAdmin4.py # 起動
+```
+
+
 ### Play
 
 | 操作 | コマンド | 補足 |

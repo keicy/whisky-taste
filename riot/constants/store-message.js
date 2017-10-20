@@ -1,3 +1,5 @@
 export default {
-  UPDATE_STORE: Symbol('updateStore'),
+  STORE_INITED: Symbol('STORE_INITED'),
+  REVIEWS_UPDATED: Symbol('REVIEWS_UPDATED'),
+  STORE_UPDATED: Symbol('STORE_UPDATED'),
 }
