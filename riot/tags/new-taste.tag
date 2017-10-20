@@ -43,10 +43,9 @@ import ac from '../action-creator.js'
     </p>
 
     <p>
-      <input
-        type="submit"
-        name="taste"
-        value="投稿する">
+      <input type="submit"
+             name="taste"
+             value="投稿する">
     </p>
   </form>
 
