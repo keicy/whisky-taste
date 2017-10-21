@@ -40,4 +40,13 @@ setActionHandler(
   newReview => store.data.reviews.push(newReview)
 )
 
+setActionHandler(
+  Action.START_REVIEW,
+  StoreMessage.REVIEWING_READY,
+  startReview => {
+    store.data.url = startReview.url
+    store.data.isReviewing = startReview.isReviewing
+  }
+)
+
 export default store
