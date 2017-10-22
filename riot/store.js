@@ -1,10 +1,16 @@
 import riot from 'riot'
-import ax from 'axios'
 import Action from './constants/action.js'
 import ac from './action-creator.js'
 import StoreMessage from './constants/store-message.js'
 
 /* TODO オブジェクトとして定義したほうが良いかも？ */
+
+
+/* TODO 
+ * store.data いらないっぽい.直接 store.reviews に格納すれば良い.
+ * 初期化は Object.assign で.
+ * あるいはプロパティをforでひとつづつ移す.
+ */
 
 const store = riot.observable()
 
@@ -38,6 +44,23 @@ setActionHandler(
   Action.POST_NEW_REVIEW,
   StoreMessage.REVIEWS_UPDATED,
   newReview => store.data.reviews.push(newReview)
+)
+
+setActionHandler(
+  Action.START_REVIEWING,
+  StoreMessage.REVIEWING_READY,
+  startReview => {
+    store.data.url = startReview.url
+    store.data.isReviewing = startReview.isReviewing
+  }
+)
+
+setActionHandler(
+  Action.QUIT_REVIEWING,
+  StoreMessage.REVIEWING_QUITED,
+  quitReview => {
+    store.data.isReviewing = quitReview
+  }
 )
 
 export default store
