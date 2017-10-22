@@ -6,13 +6,13 @@ import scala.concurrent.{ Future, ExecutionContext }
 import play.api.libs.json._
 
 import models.Models._
-import services.ReviewsService
-import services.MultiService
+import services._
 
 @Singleton
 class MountController @Inject()(
   implicit val ec: ExecutionContext,
   val multiService: MultiService,
+  val whiskiesService: WhiskiesService,
   val reviewsService: ReviewsService
 ) extends Controller {
   implicit val reviewsRowFormat = Json.format[ReviewsRow]
@@ -23,31 +23,34 @@ class MountController @Inject()(
   }
 
   def init = Action.async { req =>
-    // Future[Seq[(ReviewsRow, WhiskiesRow)]]
-    val allReviewsWithWhisky = multiService.getAllReviewsWithWhisky()
-
-    for ( seq <- allReviewsWithWhisky ) yield {
-      val reviewWithWhiskyList = for (x <- seq) yield {
-        val (w, r) = x
+    val allReviewsWithWhiskyF: Future[Seq[(ReviewsRow, WhiskiesRow)]] =
+      multiService.getAllReviewsWithWhisky()
+    val allWhiskiesF: Future[Seq[WhiskiesRow]] = whiskiesService.all()
+   
+    for {
+      tSeq <- allReviewsWithWhiskyF
+      seq <- allWhiskiesF
+    } yield { //=> Future
+      val reviewWithWhiskyList = for (t <- tSeq) yield {
+        val (r, w) = t
         Json.obj(
-          "w" -> w,
-          "r" -> r
+          "reviewId" -> r.reviewId,
+          "score" -> r.score,
+          "comment" -> r.comment,
+          "postedDate" -> r.postedDate,
+          "whiskyId" -> w.whiskyId,
+          "whiskyName" -> w.whiskyName,
+          "distilleryName" -> w.distilleryName,
+          "country" -> w.country,
+          "region" -> w.region,
+          "strength" -> w.strength
         )
       }
+
       Ok(Json.obj(
-        "reviews" -> reviewWithWhiskyList
+        "reviews" -> reviewWithWhiskyList,
+        "whiskies" -> seq
       ))
     }
-
-
-    //for {
-    //  // Seq[(ReviewsRow, WhiskiesRow)]
-    //  allReviewsWithWhisky <- multiService.getAllReviewsWithWhisky()
-    //} yield {
-    //  Ok(
-    //    Json.obj(
-    //    "reviews" -> "hoge"
-    //  ))
-    //}
   }
 }
