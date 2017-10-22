@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = PlayEvolutions.schema ++ Reviews.schema
+  lazy val schema: profile.SchemaDescription = PlayEvolutions.schema ++ Reviews.schema ++ Whiskies.schema
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -58,33 +58,71 @@ trait Tables {
 
   /** Entity class storing rows of table Reviews
    *  @param reviewId Database column review_id SqlType(serial), AutoInc, PrimaryKey
-   *  @param whiskyName Database column whisky_name SqlType(varchar), Length(100,true)
+   *  @param whiskyId Database column whisky_id SqlType(int4)
    *  @param score Database column score SqlType(int2), Default(10)
-   *  @param comment Database column comment SqlType(varchar), Length(200,true), Default(None)
+   *  @param comment Database column comment SqlType(varchar), Length(500,true), Default(None)
    *  @param postedDate Database column posted_date SqlType(date) */
-  final case class ReviewsRow(reviewId: Int, whiskyName: String, score: Short = 10, comment: Option[String] = None, postedDate: java.sql.Date)
+  final case class ReviewsRow(reviewId: Int, whiskyId: Int, score: Short = 10, comment: Option[String] = None, postedDate: java.sql.Date)
   /** GetResult implicit for fetching ReviewsRow objects using plain SQL queries */
-  implicit def GetResultReviewsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Short], e3: GR[Option[String]], e4: GR[java.sql.Date]): GR[ReviewsRow] = GR{
+  implicit def GetResultReviewsRow(implicit e0: GR[Int], e1: GR[Short], e2: GR[Option[String]], e3: GR[java.sql.Date]): GR[ReviewsRow] = GR{
     prs => import prs._
-    ReviewsRow.tupled((<<[Int], <<[String], <<[Short], <<?[String], <<[java.sql.Date]))
+    ReviewsRow.tupled((<<[Int], <<[Int], <<[Short], <<?[String], <<[java.sql.Date]))
   }
   /** Table description of table reviews. Objects of this class serve as prototypes for rows in queries. */
   class Reviews(_tableTag: Tag) extends profile.api.Table[ReviewsRow](_tableTag, "reviews") {
-    def * = (reviewId, whiskyName, score, comment, postedDate) <> (ReviewsRow.tupled, ReviewsRow.unapply)
+    def * = (reviewId, whiskyId, score, comment, postedDate) <> (ReviewsRow.tupled, ReviewsRow.unapply)
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(reviewId), Rep.Some(whiskyName), Rep.Some(score), comment, Rep.Some(postedDate)).shaped.<>({r=>import r._; _1.map(_=> ReviewsRow.tupled((_1.get, _2.get, _3.get, _4, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(reviewId), Rep.Some(whiskyId), Rep.Some(score), comment, Rep.Some(postedDate)).shaped.<>({r=>import r._; _1.map(_=> ReviewsRow.tupled((_1.get, _2.get, _3.get, _4, _5.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column review_id SqlType(serial), AutoInc, PrimaryKey */
     val reviewId: Rep[Int] = column[Int]("review_id", O.AutoInc, O.PrimaryKey)
-    /** Database column whisky_name SqlType(varchar), Length(100,true) */
-    val whiskyName: Rep[String] = column[String]("whisky_name", O.Length(100,varying=true))
+    /** Database column whisky_id SqlType(int4) */
+    val whiskyId: Rep[Int] = column[Int]("whisky_id")
     /** Database column score SqlType(int2), Default(10) */
     val score: Rep[Short] = column[Short]("score", O.Default(10))
-    /** Database column comment SqlType(varchar), Length(200,true), Default(None) */
-    val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(200,varying=true), O.Default(None))
+    /** Database column comment SqlType(varchar), Length(500,true), Default(None) */
+    val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(500,varying=true), O.Default(None))
     /** Database column posted_date SqlType(date) */
     val postedDate: Rep[java.sql.Date] = column[java.sql.Date]("posted_date")
+
+    /** Foreign key referencing Whiskies (database name reviews_whisky_id_fkey) */
+    lazy val whiskiesFk = foreignKey("reviews_whisky_id_fkey", whiskyId, Whiskies)(r => r.whiskyId, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
   /** Collection-like TableQuery object for table Reviews */
   lazy val Reviews = new TableQuery(tag => new Reviews(tag))
+
+  /** Entity class storing rows of table Whiskies
+   *  @param whiskyId Database column whisky_id SqlType(serial), AutoInc, PrimaryKey
+   *  @param whiskyName Database column whisky_name SqlType(varchar), Length(100,true)
+   *  @param distilleryName Database column distillery_name SqlType(varchar), Length(30,true), Default(None)
+   *  @param country Database column country SqlType(varchar), Length(30,true), Default(None)
+   *  @param region Database column region SqlType(varchar), Length(30,true), Default(None)
+   *  @param strength Database column strength SqlType(float4), Default(None) */
+  final case class WhiskiesRow(whiskyId: Int, whiskyName: String, distilleryName: Option[String] = None, country: Option[String] = None, region: Option[String] = None, strength: Option[Float] = None)
+  /** GetResult implicit for fetching WhiskiesRow objects using plain SQL queries */
+  implicit def GetResultWhiskiesRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[String]], e3: GR[Option[Float]]): GR[WhiskiesRow] = GR{
+    prs => import prs._
+    WhiskiesRow.tupled((<<[Int], <<[String], <<?[String], <<?[String], <<?[String], <<?[Float]))
+  }
+  /** Table description of table whiskies. Objects of this class serve as prototypes for rows in queries. */
+  class Whiskies(_tableTag: Tag) extends profile.api.Table[WhiskiesRow](_tableTag, "whiskies") {
+    def * = (whiskyId, whiskyName, distilleryName, country, region, strength) <> (WhiskiesRow.tupled, WhiskiesRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = (Rep.Some(whiskyId), Rep.Some(whiskyName), distilleryName, country, region, strength).shaped.<>({r=>import r._; _1.map(_=> WhiskiesRow.tupled((_1.get, _2.get, _3, _4, _5, _6)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column whisky_id SqlType(serial), AutoInc, PrimaryKey */
+    val whiskyId: Rep[Int] = column[Int]("whisky_id", O.AutoInc, O.PrimaryKey)
+    /** Database column whisky_name SqlType(varchar), Length(100,true) */
+    val whiskyName: Rep[String] = column[String]("whisky_name", O.Length(100,varying=true))
+    /** Database column distillery_name SqlType(varchar), Length(30,true), Default(None) */
+    val distilleryName: Rep[Option[String]] = column[Option[String]]("distillery_name", O.Length(30,varying=true), O.Default(None))
+    /** Database column country SqlType(varchar), Length(30,true), Default(None) */
+    val country: Rep[Option[String]] = column[Option[String]]("country", O.Length(30,varying=true), O.Default(None))
+    /** Database column region SqlType(varchar), Length(30,true), Default(None) */
+    val region: Rep[Option[String]] = column[Option[String]]("region", O.Length(30,varying=true), O.Default(None))
+    /** Database column strength SqlType(float4), Default(None) */
+    val strength: Rep[Option[Float]] = column[Option[Float]]("strength", O.Default(None))
+  }
+  /** Collection-like TableQuery object for table Whiskies */
+  lazy val Whiskies = new TableQuery(tag => new Whiskies(tag))
 }
