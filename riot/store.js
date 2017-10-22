@@ -1,5 +1,4 @@
 import riot from 'riot'
-import ax from 'axios'
 import Action from './constants/action.js'
 import ac from './action-creator.js'
 import StoreMessage from './constants/store-message.js'
@@ -9,6 +8,8 @@ import StoreMessage from './constants/store-message.js'
 
 /* TODO 
  * store.data いらないっぽい.直接 store.reviews に格納すれば良い.
+ * 初期化は Object.assign で.
+ * あるいはプロパティをforでひとつづつ移す.
  */
 
 const store = riot.observable()

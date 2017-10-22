@@ -16,7 +16,6 @@ store.one(StoreMessage.STORE_INITED, () => {
   route('/', () => {
     riot.mount('app', 'app-layout')
     riot.mount('eyecatch', 'review-button', {store})
-//    riot.mount('post-form', 'review-form')
     riot.mount('item-list', 'review-list', {store})
   })
   route('/new-review', () => {
