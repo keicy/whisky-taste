@@ -1,36 +1,19 @@
-package dao
+package daos
 
 import play.api.Logger
 import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
-import slick.jdbc.JdbcProfile
-import scala.concurrent.{ Future, ExecutionContext }
-import java.time.{LocalDate}
+import slick.jdbc.{ JdbcProfile, GetResult => GR }
+import java.time.{ LocalDate }
 import java.sql.Date
 
 import models.Models.ReviewsRow
-  import dao.WhiskiesDAO._
+import daos.WhiskiesDAO.whiskies
 
 @Singleton
 class ReviewsDAO @Inject()(
-  val dbConfigProvider: DatabaseConfigProvider,
-  implicit val ec: ExecutionContext
+  val dbConfigProvider: DatabaseConfigProvider
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
-  import profile.api._
-  import ReviewsDAO._
-
-  def all(): Future[Seq[ReviewsRow]] = db.run(reviews.result)
-
-  def create(review: ReviewsRow): Future[ReviewsRow] = {
-    Logger.debug(s"Insert Data = ${review}.")
-    db.run(reviews returning reviews += review)
-  }
-}
-
-object ReviewsDAO {
-  //import slick.model.ForeignKeyAction //TODO いらない?一旦OUT.
-  import slick.jdbc.{GetResult => GR}
-  val profile = slick.jdbc.PostgresProfile
   import profile.api._
 
   class Reviews(_tableTag: Tag) extends profile.api.Table[ReviewsRow](_tableTag, "reviews") {
