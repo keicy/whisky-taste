@@ -6,6 +6,11 @@ import StoreMessage from './constants/store-message.js'
 
 /* TODO オブジェクトとして定義したほうが良いかも？ */
 
+
+/* TODO 
+ * store.data いらないっぽい.直接 store.reviews に格納すれば良い.
+ */
+
 const store = riot.observable()
 
 function setActionHandler (
@@ -41,11 +46,19 @@ setActionHandler(
 )
 
 setActionHandler(
-  Action.START_REVIEW,
+  Action.START_REVIEWING,
   StoreMessage.REVIEWING_READY,
   startReview => {
     store.data.url = startReview.url
     store.data.isReviewing = startReview.isReviewing
+  }
+)
+
+setActionHandler(
+  Action.QUIT_REVIEWING,
+  StoreMessage.REVIEWING_QUITED,
+  quitReview => {
+    store.data.isReviewing = quitReview
   }
 )
 

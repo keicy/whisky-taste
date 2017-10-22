@@ -20,7 +20,7 @@ store.one(StoreMessage.STORE_INITED, () => {
     riot.mount('item-list', 'review-list', {store})
   })
   route('/new-review', () => {
-    riot.mount('post-form', 'review-form')
+    riot.mount('post-form', 'review-form', {store})
   })
   route.start(true)
 })

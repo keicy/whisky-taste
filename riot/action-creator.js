@@ -24,9 +24,14 @@ export default riot.observable({
       })
   },
 
-  startReview () {
+  startReviewing () {
     const url = location.href
     const isReviewing = true
-    this.trigger(Action.START_REVIEW, {url, isReviewing})
+    this.trigger(Action.START_REVIEWING, {url, isReviewing})
+  },
+
+  quitReviewing () {
+    const isReviewing = false
+    this.trigger(Action.QUIT_REVIEWING, isReviewing)
   },
 })

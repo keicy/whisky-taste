@@ -1,7 +1,8 @@
 import ac from '../action-creator.js'
+import StoreMessage from '../constants/store-message.js'
 
 <review-form>
-  <form onsubmit={ postNewReview }>
+  <div>
     <p>
       <label>ボトル名
         <input ref="whiskyName"
@@ -33,31 +34,38 @@ import ac from '../action-creator.js'
                name="comment">
       </label>
     </p>
+  </div>
 
-    <p>
-      <input type="submit"
-             name="taste"
-             value="投稿する">
-    </p>
-  </form>
+  <div>
+    <button class="button"
+            onclick={postNewReview}>
+      投稿する
+    </button>
+
+    <button class="button"
+            onclick={quitReviewing}>
+      やめる
+    </button>
+  </div>
   <script>
-   initScore() {
+   this.store = opts.store
+
+   initScore () {
      this.score = 10
    }
    
-   showScore() {
+   showScore () {
      this.score = parseInt(this.refs.score.value)
    }
 
-   resetForm() {
+   resetForm () {
      this.refs.whiskyName.value = ''
      this.refs.score.value = 10
      this.initScore()
      this.refs.comment.value = ''
    }
 
-   postNewReview(e) {
-     e.preventDefault()
+   postNewReview () {
      const whiskyName =  this.refs.whiskyName.value
      const score = this.score
      const comment = this.refs.comment.value
@@ -67,10 +75,21 @@ import ac from '../action-creator.js'
        score,
        comment,
      })
-     this.resetForm()
    }
 
+   quitReviewing () {
+     this.resetForm()
+     ac.quitReviewing()
+   }
+
+   returnBeforePage () {
+     window.location.href = this.store.data.url
+   }
+
+   this.store.on(StoreMessage.REVIEWS_UPDATED, this.quitReviewing)
+   this.store.on(StoreMessage.REVIEWING_QUITED, this.returnBeforePage)
+
    /* データ初期化 */
-   this.initScore()   
+   this.initScore()
   </script>
 </review-form>

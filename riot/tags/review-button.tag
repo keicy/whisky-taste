@@ -3,28 +3,30 @@ import StoreMessage from '../constants/store-message.js'
 
 <review-button>
   <button class="button"
-          onclick={startReview}
-          disabled={disabled} >
+          onclick={startReviewing}
+          disabled={disabled}>
     レビューを書く
   </button>
   <script >
    this.store = opts.store
 
-   startReview () {
-     ac.startReview()
+   startReviewing () {
+     ac.startReviewing()
    }
    
    showReviewForm () {
-     this.toggleActive()
+     this.toggleActivate ()
      window.location.href = '#/new-review'
    }
 
-   toggleActive () {
-     this.disabled = !this.disabled
+   toggleActivate () {
+     this.disabled = this.store.data.isReviewing
      this.update()
    }
+   
+   this.store.on(StoreMessage.REVIEWING_READY, this.showReviewForm)
+   this.store.on(StoreMessage.REVIEWING_QUITED, this.toggleActivate)
 
    this.disabled = false
-   this.store.on(StoreMessage.REVIEWING_READY, this.showReviewForm)
   </script>
 </review-button>
