@@ -1,6 +1,5 @@
 package daos
 
-import play.api.Logger
 import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.{ JdbcProfile, GetResult => GR }
@@ -13,7 +12,7 @@ class WhiskiesDAO @Inject()(
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
 
-  class Whiskies(_tableTag: Tag) extends profile.api.Table[WhiskiesRow](_tableTag, "whiskies") {
+  class Whiskies(_tableTag: Tag) extends Table[WhiskiesRow](_tableTag, "whiskies") {
     def * = (whiskyId, whiskyName, distilleryName, country, region, strength) <> (WhiskiesRow.tupled, WhiskiesRow.unapply)
     /* 全てのレコードを Option型 で受け取る関数( OUTER JON に有効) */
     def ? = (whiskyId, Rep.Some(whiskyName), distilleryName, country, region, strength).shaped.<>({r=>import r._; _1.map(_=> WhiskiesRow.tupled((_1, _2.get, _3, _4, _5, _6)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
@@ -32,5 +31,5 @@ class WhiskiesDAO @Inject()(
     WhiskiesRow.tupled((<<?[Int], <<[String], <<?[String], <<?[String], <<?[String], <<?[Float]))
   }
 
-  lazy val whiskies = new TableQuery(tag => new Whiskies(tag))
+  val whiskies = new TableQuery(tag => new Whiskies(tag))
 }

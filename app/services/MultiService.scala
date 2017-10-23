@@ -7,8 +7,7 @@ import slick.jdbc.JdbcProfile
 import scala.concurrent.{ Future, ExecutionContext }
 
 import models.Models._
-import daos.WhiskiesDAO
-import daos.ReviewsDAO
+import daos._
 
 @Singleton
 class MultiService @Inject()(

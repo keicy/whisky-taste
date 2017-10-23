@@ -8,13 +8,16 @@ import java.time.{ LocalDate }
 import java.sql.Date
 
 import models.Models.ReviewsRow
-import daos.WhiskiesDAO.whiskies
+import daos.WhiskiesDAO
+
 
 @Singleton
 class ReviewsDAO @Inject()(
-  val dbConfigProvider: DatabaseConfigProvider
+  val dbConfigProvider: DatabaseConfigProvider,
+  val whiskiesDAO: WhiskiesDAO
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
+    val whiskies = whiskiesDAO.whiskies
 
   class Reviews(_tableTag: Tag) extends profile.api.Table[ReviewsRow](_tableTag, "reviews") {
     /* Slick が LocalDate を扱うための変換定義 */
@@ -42,5 +45,5 @@ class ReviewsDAO @Inject()(
     ReviewsRow.tupled((<<?[Int], <<?[Int], <<[Short], <<?[String], <<?[LocalDate]))
   }
 
-  lazy val reviews = new TableQuery(tag => new Reviews(tag))
+  val reviews = new TableQuery(tag => new Reviews(tag))
 }
