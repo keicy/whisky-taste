@@ -15,8 +15,8 @@ CREATE TABLE whiskies (
 --    , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
--- INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (1, 'Knockando 21 yo 1990', 'Knockando', 'Scotland', 'Speyside', 43.0);
--- INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (2, 'GlenDronach 21 yo Parliament', 'The GlenDronach', 'Scotland', 'Speyside', 48.0);
+INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (1, 'Knockando 21 yo 1990', 'Knockando', 'Scotland', 'Speyside', 43.0);
+INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (2, 'GlenDronach 21 yo Parliament', 'The GlenDronach', 'Scotland', 'Speyside', 48.0);
 
 # --- !Downs
 DROP TABLE IF EXISTS whiskies;

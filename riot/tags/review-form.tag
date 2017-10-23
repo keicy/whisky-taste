@@ -3,17 +3,63 @@ import StoreMessage from '../constants/store-message.js'
 
 <review-form>
   <div>
-    <p>
-      <label>ボトル名
+    <div class="field">
+      <label class="label">ボトル名</label>
+      <div class="control">
         <input ref="whiskyName"
+               class="input"
                type="text"
-               name="whiskyName"
-               required>
-      </label>
-    </p>
+               link="whiskies"
+               placeholder="ダブルクリックで選択/入力で新規追加"
+        >
+        <datalist id="whiskies">
+          <!-- TODO ここに option属性をループで展開 -->
+        </datalist>
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">蒸留所</label>
+      <div class="control">
+        <input ref="distilleryName"
+               class="input"
+               type="text"
+               placeholder="蒸留所名"
+        >
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">原産国</label>
+      <div class="control">
+        <input ref="country"
+               class="input"
+               type="text"
+               placeholder="原産国名"
+        >
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">原産地域</label>
+      <div class="control">
+        <input ref="region"
+               class="input"
+               type="text"
+               placeholder="原産地域"
+        >
+      </div>
+    </div>
+    <div class="field">
+      <label class="label">度数</label>
+      <div class="control">
+        <input ref="strength"
+               class="input"
+               type="text"
+               placeholder="47.3"
+        >
+      </div>
+    </div>
 
-    <p>
-      <label>点数
+    <div>
+      <label>評価点数
         <input ref="score"
                type="range"
                name="score"
@@ -25,15 +71,17 @@ import StoreMessage from '../constants/store-message.js'
                oninput={ showScore }>
         <span>{ score }</span>
       </label>
-    </p>
+    </div>
 
-    <p>
-      <label>テイスティングコメント
+    <div class="field">
+      <label class="label">テイスティングコメント</label>
+      <div class="control">
         <input ref="comment"
+               class="textarea"
                type="text"
-               name="comment">
-      </label>
-    </p>
+        >
+      </div>
+    </div>
   </div>
 
   <div>
@@ -47,6 +95,7 @@ import StoreMessage from '../constants/store-message.js'
       やめる
     </button>
   </div>
+  
   <script>
    this.store = opts.store
 

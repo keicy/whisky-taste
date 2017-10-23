@@ -16,8 +16,8 @@ CREATE TABLE reviews (
 --    , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
--- INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (1, 1, 17, 'I love it! Aftertaste sustains long long long...');
--- INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (2, 2, 17, 'Smooth and rich! Chocolate, wood, spicy.');
+INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (1, 1, 17, 'I love it! Aftertaste sustains long long long...');
+INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (2, 2, 17, 'Smooth and rich! Chocolate, wood, spicy.');
 
 # --- !Downs
 DROP TABLE IF EXISTS reviews;
