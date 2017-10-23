@@ -1,24 +1,22 @@
-# reviews
+# whiskies
 
 # --- !Ups
-CREATE TABLE reviews (
-      PRIMARY KEY (review_id)
-    , review_id  SERIAL NOT NULL
---    , user_id BIGINT NOT NULL
---    , whisky_id BIGINT NOT NULL
---    , title VARCHAR(50) NOT NULL
+CREATE TABLE whiskies (
+      PRIMARY KEY (whisky_id)
+    , whisky_id SERIAL NOT NULL
     , whisky_name VARCHAR(100) NOT NULL
-    , score SMALLINT DEFAULT 10 NOT NULL
-            CHECK (0 <= score AND score <= 20)
-    , comment VARCHAR(200)
-    , posted_date DATE DEFAULT CURRENT_DATE NOT NULL
+    , distillery_name VARCHAR(30)
+    , country VARCHAR(30)
+    , region VARCHAR(30)
+--    , type VARCHAR(50)
+    , strength REAL
+--    , posted_date DATE DEFAULT CURRENT_DATE() NOT NULL
 --    , created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL
 --    , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
-INSERT INTO reviews (whisky_name, score, comment) VALUES ('Knockando 21 yo 1990', 16, 'I love it! Aftertaste sustains long long long...');
-INSERT INTO reviews (whisky_name, score, comment) VALUES ('GlenDronach 21 yo Parliament', 16, 'Smooth and rich! Chocolate, wood, spicy.');
-INSERT INTO reviews (whisky_name, score, comment) VALUES ('Auchentoshan 12 yo', 13, 'My favorite daily bottle! Pretty good aroma. Smooth, woodiness, syrup, marmalade.');
+-- INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (1, 'Knockando 21 yo 1990', 'Knockando', 'Scotland', 'Speyside', 43.0);
+-- INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (2, 'GlenDronach 21 yo Parliament', 'The GlenDronach', 'Scotland', 'Speyside', 48.0);
 
 # --- !Downs
-DROP TABLE reviews;
+DROP TABLE IF EXISTS whiskies;
