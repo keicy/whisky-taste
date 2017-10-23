@@ -34,7 +34,7 @@ class ReviewsDAO @Inject()(
     val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(200,varying=true), O.Default(None))
     val postedDate: Rep[Option[LocalDate]] = column[Option[LocalDate]]("posted_date", O.AutoInc ,O.Default(None)) // DB側で値が自動挿入されるので `O.AutoInc` を付与してクエリ文に含まれないようにする
 
-    lazy val whiskiy = foreignKey("reviews_whisky_id_fkey", whiskyId, whiskies)(r => r.whiskyId, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
+    val whiskiy = foreignKey("reviews_whisky_id_fkey", whiskyId, whiskies)(r => r.whiskyId, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.NoAction)
   }
 
   /* 素のSQL文発行時のための変換定義 */
