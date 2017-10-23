@@ -8,13 +8,11 @@ import java.time.{ LocalDate }
 import java.sql.Date
 
 import models.Models.ReviewsRow
-import daos.WhiskiesDAO
-
 
 @Singleton
 class ReviewsDAO @Inject()(
   val dbConfigProvider: DatabaseConfigProvider,
-  val whiskiesDAO: WhiskiesDAO
+  val whiskiesDAO: WhiskiesDAO // 同一パッケージのため import は不要
 ) extends HasDatabaseConfigProvider[JdbcProfile] {
   import profile.api._
     val whiskies = whiskiesDAO.whiskies
