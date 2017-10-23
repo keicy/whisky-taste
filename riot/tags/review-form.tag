@@ -11,10 +11,11 @@ import StoreMessage from '../constants/store-message.js'
                list="whiskies"
                placeholder="ダブルクリックで選択/入力で新規追加"
                class="input"
+               onchange={ whiskyNameSelected }
         >
         <datalist id="whiskies">
           <virtual each={ whiskies }>
-            <option id={ whiskyId }>{ whiskyName }</option>
+            <option>{ whiskyName }</option>
           </virtual>
         </datalist>
       </div>
@@ -27,6 +28,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="蒸留所名"
                class="input"
+               readonly={ knownWhiskeyId }
         >
       </div>
     </div>
@@ -38,6 +40,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="原産国名"
                class="input"
+               readonly={ knownWhiskeyId }
         >
       </div>
     </div>
@@ -49,6 +52,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="原産地域"
                class="input"
+               readonly={ knownWhiskeyId }
         >
       </div>
     </div>
@@ -60,21 +64,24 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder=47.3
                class="input"
+               readonly={ knownWhiskeyId }
         >
       </div>
     </div>
 
     <div>
       <label>評価点数
+        <!-- TODO 初期値を "10" でなく 10 にする. 他の属性値も! -->
         <input ref="score"
                type="range"
                name="score"
                required
                min="1"
                max="20"
-               value="10" <!-- TODO 初期値を "10" でなく 10 にする. 他の属性値も! -->
+               value="10"
                step="1"
-               oninput={ showScore }>
+               oninput={ showScore }
+        >
         <span>{ score }</span>
       </label>
     </div>
@@ -92,12 +99,12 @@ import StoreMessage from '../constants/store-message.js'
 
   <div>
     <button class="button"
-            onclick={postNewReview}>
+            onclick={ postNewReview }>
       投稿する
     </button>
 
     <button class="button"
-            onclick={quitReviewing}>
+            onclick={ quitReviewing }>
       やめる
     </button>
   </div>
@@ -109,14 +116,45 @@ import StoreMessage from '../constants/store-message.js'
      this.score = 10
    }
 
-   initWhiskies () {
+   init () {
      this.whiskies = this.store.data.whiskies
+     this.knownWhiskeyId = null
+     this.initScore()
    }
-   
+
+   whiskyNameSelected () {
+     const whiskyName =  this.refs.whiskyName.value
+     const whisky = this.whiskies.find(w => w.whiskyName === whiskyName)
+     if (whisky) {
+       this.knownWhiskeyId = whisky.whiskyId
+       this.setWhiskyForm (whisky)
+       this.update()
+     } else {
+       this.knownWhiskeyId = null
+       this.resetWhiskyForm ()
+       this.update()
+     }
+   }
+
+   setWhiskyForm (whisky) {
+     this.refs.distilleryName.value = whisky.distilleryName
+     this.refs.country.value = whisky.country
+     this.refs.region.value = whisky.region
+     this.refs.strength.value = whisky.strength
+   }
+
+   resetWhiskyForm () {
+     this.refs.distilleryName.value = ''
+     this.refs.country.value = ''
+     this.refs.region.value = ''
+     this.refs.strength.value = ''
+   }
+
    showScore () {
      this.score = parseInt(this.refs.score.value)
    }
 
+   // TODO 見直しor削除
    resetForm () {
      this.refs.whiskyName.value = ''
      this.refs.score.value = 10
@@ -149,8 +187,6 @@ import StoreMessage from '../constants/store-message.js'
    this.store.on(StoreMessage.REVIEWING_QUITED, this.returnBeforePage)
 
    /* データ初期化 */
-   this.initWhiskies()
-   this.initScore()
-   console.log(this.whiskies)
+   this.init()
   </script>
 </review-form>
