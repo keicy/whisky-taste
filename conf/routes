@@ -16,7 +16,8 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # for using public/index.html
 # GET     /                            controllers.Assets.at(path="/public", file="index.html")
 
-GET    /                controllers.MountController.index
-GET    /init            controllers.MountController.init
-GET    /reviews         controllers.ReviewsController.all
-POST   /reviews         controllers.ReviewsController.create
+GET    /                                  controllers.MountController.index
+GET    /init                              controllers.MountController.init
+#GET    /reviews         controllers.ReviewsController.all
+POST   /reviews                           controllers.ReviewsController.create
+POST   /whiskies/reviews                  controllers.WhiskiesController.createWithReview

@@ -2,6 +2,7 @@ import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <review-form>
+  <!-- TODO formタグを使ったほうが必須項目に警告でるので良いかも -->
   <div>
     <div class="field">
       <label class="label">ボトル名</label>
@@ -11,6 +12,7 @@ import StoreMessage from '../constants/store-message.js'
                list="whiskies"
                placeholder="ダブルクリックで選択/入力で新規追加"
                class="input"
+               required
                onchange={ whiskyNameSelected }
         >
         <datalist id="whiskies">
@@ -75,11 +77,11 @@ import StoreMessage from '../constants/store-message.js'
         <input ref="score"
                type="range"
                name="score"
-               required
                min="1"
                max="20"
                value="10"
                step="1"
+               required
                oninput={ showScore }
         >
         <span>{ score }</span>
@@ -97,16 +99,19 @@ import StoreMessage from '../constants/store-message.js'
     </div>
   </div>
 
-  <div>
-    <button class="button"
-            onclick={ postNewReview }>
-      投稿する
-    </button>
-
-    <button class="button"
-            onclick={ quitReviewing }>
-      やめる
-    </button>
+  <div class="field is-grouped">
+    <p class="control">
+      <a class="button is-link"
+         onclick={ postNewReview }>
+        投稿する
+        </a>
+    </p>
+    <p class="control">
+      <a class="button"
+         onclick={ quitReviewing }>
+        やめる
+        </a>
+    </p>
   </div>
   
   <script>
@@ -163,19 +168,29 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    postNewReview () {
+     const whiskeyId = this.knownWhiskeyId
      const whiskyName =  this.refs.whiskyName.value
+     const distilleryName = this.refs.distilleryName.value
+     const country = this.refs.country.value
+     const region = this.refs.region.value
+     const strength = this.refs.strength.value
      const score = this.score
      const comment = this.refs.comment.value
      if (!whiskyName || !score) return
      ac.postNewReview({
+       whiskeyId,
        whiskyName,
+       distilleryName,
+       country,
+       region,
+       strength,
        score,
        comment,
      })
    }
 
    quitReviewing () {
-     this.resetForm() // TODO いらないかも？
+     // this.resetForm() // TODO いらない模様（毎回新しくマウントされるので）
      ac.quitReviewing()
    }
 
