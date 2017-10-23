@@ -7,53 +7,59 @@ import StoreMessage from '../constants/store-message.js'
       <label class="label">ボトル名</label>
       <div class="control">
         <input ref="whiskyName"
-               class="input"
                type="text"
-               link="whiskies"
+               list="whiskies"
                placeholder="ダブルクリックで選択/入力で新規追加"
+               class="input"
         >
         <datalist id="whiskies">
-          <!-- TODO ここに option属性をループで展開 -->
+          <virtual each={ whiskies }>
+            <option id={ whiskyId }>{ whiskyName }</option>
+          </virtual>
         </datalist>
       </div>
     </div>
+
     <div class="field">
       <label class="label">蒸留所</label>
       <div class="control">
         <input ref="distilleryName"
-               class="input"
                type="text"
                placeholder="蒸留所名"
+               class="input"
         >
       </div>
     </div>
+
     <div class="field">
       <label class="label">原産国</label>
       <div class="control">
         <input ref="country"
-               class="input"
                type="text"
                placeholder="原産国名"
+               class="input"
         >
       </div>
     </div>
+
     <div class="field">
       <label class="label">原産地域</label>
       <div class="control">
         <input ref="region"
-               class="input"
                type="text"
                placeholder="原産地域"
+               class="input"
         >
       </div>
     </div>
+
     <div class="field">
       <label class="label">度数</label>
       <div class="control">
         <input ref="strength"
-               class="input"
                type="text"
-               placeholder="47.3"
+               placeholder=47.3
+               class="input"
         >
       </div>
     </div>
@@ -66,7 +72,7 @@ import StoreMessage from '../constants/store-message.js'
                required
                min="1"
                max="20"
-               value="10"
+               value="10" <!-- TODO 初期値を "10" でなく 10 にする. 他の属性値も! -->
                step="1"
                oninput={ showScore }>
         <span>{ score }</span>
@@ -77,8 +83,8 @@ import StoreMessage from '../constants/store-message.js'
       <label class="label">テイスティングコメント</label>
       <div class="control">
         <input ref="comment"
-               class="textarea"
                type="text"
+               class="textarea"
         >
       </div>
     </div>
@@ -101,6 +107,10 @@ import StoreMessage from '../constants/store-message.js'
 
    initScore () {
      this.score = 10
+   }
+
+   initWhiskies () {
+     this.whiskies = this.store.data.whiskies
    }
    
    showScore () {
@@ -127,7 +137,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    quitReviewing () {
-     this.resetForm()
+     this.resetForm() // TODO いらないかも？
      ac.quitReviewing()
    }
 
@@ -139,6 +149,8 @@ import StoreMessage from '../constants/store-message.js'
    this.store.on(StoreMessage.REVIEWING_QUITED, this.returnBeforePage)
 
    /* データ初期化 */
+   this.initWhiskies()
    this.initScore()
+   console.log(this.whiskies)
   </script>
 </review-form>
