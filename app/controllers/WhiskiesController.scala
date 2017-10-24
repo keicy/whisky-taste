@@ -13,7 +13,7 @@ import services._
 
 @Singleton
 class WhiskiesController @Inject()(
-  implicit val ec: ExecuytionContext,
+  implicit val ec: ExecutionContext,
   val whiskiesService: WhiskiesService,
   val reviewsService: ReviewsService
 ) extends Controller {
@@ -22,12 +22,12 @@ class WhiskiesController @Inject()(
 
   def createWithReview = Action.async(json) { req => {
     val postData = req.body
-    val wR = (postData \ "whisky").get.validate[WhiskiesRow]
-    val rR = (postData \ "review").get.validate[ReviewsRow]
+    val wJs = (postData \ "whisky").get.validate[WhiskiesRow]
+    val rJs = (postData \ "review").get.validate[ReviewsRow]
 
     val res = for { // Option型と同様の扱い方
-      w <- wR
-      r <- rR 
+      w <- wJs
+      r <- rJs
     } yield {
       whiskiesService.createWithReview(w, r)
     }
@@ -42,9 +42,10 @@ class WhiskiesController @Inject()(
             "message" -> JsError.toJson(errors)))
         )
       },
-      w_r => w_r.map(xxx => {
-        val (w, r) = xxx
+      w_r => w_r.map(t => {
+        val (w, r) = t
 
+        /*
         val reviewWithWhisky =Json.obj(
           "reviewId" -> r.reviewId,
           "score" -> r.score,
@@ -57,10 +58,12 @@ class WhiskiesController @Inject()(
           "region" -> w.region,
           "strength" -> w.strength
         )
+         */
 
         Ok(Json.obj(
-          "whisky" -> w,
-          "review" -> reviewWithWhisky))
+          "newWhiskyWithReview" -> Json.obj(
+            "whisky" -> w,
+            "review" -> r)))
       })
     )
   }}

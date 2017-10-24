@@ -63,7 +63,8 @@ import StoreMessage from '../constants/store-message.js'
       <label class="label">度数</label>
       <div class="control">
         <input ref="strength"
-               type="text"
+               type="number"
+               step=0.1
                placeholder=47.3
                class="input"
                readonly={ knownWhiskeyId }
@@ -73,14 +74,13 @@ import StoreMessage from '../constants/store-message.js'
 
     <div>
       <label>評価点数
-        <!-- TODO 初期値を "10" でなく 10 にする. 他の属性値も! -->
         <input ref="score"
                type="range"
                name="score"
-               min="1"
-               max="20"
-               value="10"
-               step="1"
+               min=1
+               max=20
+               value=10
+               step=1
                required
                oninput={ showScore }
         >
@@ -104,13 +104,13 @@ import StoreMessage from '../constants/store-message.js'
       <a class="button is-link"
          onclick={ postNewReview }>
         投稿する
-        </a>
+      </a>
     </p>
     <p class="control">
       <a class="button"
          onclick={ quitReviewing }>
         やめる
-        </a>
+      </a>
     </p>
   </div>
   
@@ -133,11 +133,9 @@ import StoreMessage from '../constants/store-message.js'
      if (whisky) {
        this.knownWhiskeyId = whisky.whiskyId
        this.setWhiskyForm (whisky)
-       this.update()
      } else {
        this.knownWhiskeyId = null
        this.resetWhiskyForm ()
-       this.update()
      }
    }
 
@@ -173,7 +171,7 @@ import StoreMessage from '../constants/store-message.js'
      const distilleryName = this.refs.distilleryName.value
      const country = this.refs.country.value
      const region = this.refs.region.value
-     const strength = this.refs.strength.value
+     const strength = parseInt(this.refs.strength.value)
      const score = this.score
      const comment = this.refs.comment.value
      if (!whiskyName || !score) return
@@ -199,6 +197,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    this.store.on(StoreMessage.REVIEWS_UPDATED, this.quitReviewing)
+   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.quitReviewing)
    this.store.on(StoreMessage.REVIEWING_QUITED, this.returnBeforePage)
 
    /* データ初期化 */

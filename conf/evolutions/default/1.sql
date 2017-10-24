@@ -17,6 +17,7 @@ CREATE TABLE whiskies (
 
 INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (1, 'Knockando 21 yo 1990', 'Knockando', 'Scotland', 'Speyside', 43.0);
 INSERT INTO whiskies (whisky_id, whisky_name, distillery_name, country, region, strength) VALUES (2, 'GlenDronach 21 yo Parliament', 'The GlenDronach', 'Scotland', 'Speyside', 48.0);
+SELECT setval('whiskies_whisky_id_seq', (SELECT MAX(whisky_id) FROM whiskies)); -- 上記でPKの値を指定して登録しているため,シーケンスオブジェクトの値を補正
 
 # --- !Downs
 DROP TABLE IF EXISTS whiskies;

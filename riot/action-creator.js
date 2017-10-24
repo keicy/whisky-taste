@@ -30,23 +30,24 @@ export default riot.observable({
         })
     } else { // ウイスキーとレビューを登録するAPIを叩く
       const whisky = {
-        score: newReview.score,
-        comment: newReview.comment,
-      }
-      const review = {
         whiskyName: newReview.whiskyName,
         distilleryName: newReview.distilleryName,
         country: newReview.country,
         region: newReview.region,
         strength: newReview.strength,
       }
-      const newWhiskyAndReview = {
+      const review = {
+        score: newReview.score,
+        comment: newReview.comment,
+      }
+      const whiskyWithReview = {
         whisky,
         review,
       }
-      ax.post('/whiskies/reviews', newWhiskyAndReview)
+      console.log(whiskyWithReview)
+      ax.post('/whiskies/reviews', whiskyWithReview)
         .then(res => {
-          this.trigger(Action.POST_NEW_REVIEW, res.data.newReview) // TODO アクション名個別化
+          this.trigger(Action.POST_NEW_WHISKY_WITH_REVIEW, res.data.newWhiskyWithReview)
         })
     }
   },
