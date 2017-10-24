@@ -7,6 +7,7 @@ import store from './store.js'
 import StoreMessage from './constants/store-message.js'
 
 import './tags/app-layout.tag'
+import './tags/whisky-list.tag'
 import './tags/review-form.tag'
 import './tags/review-list.tag'
 import './tags/review-button.tag'
@@ -17,6 +18,7 @@ store.one(StoreMessage.STORE_INITED, () => {
   route('/', () => {
     riot.mount('app', 'app-layout')
     riot.mount('eyecatch', 'review-button', {store})
+    riot.mount('post-form', 'whisky-list', {store})
     riot.mount('item-list', 'review-list', {store})
   })
   route('/new-review', () => {
