@@ -1,5 +1,6 @@
 import route from 'riot-route'
 import riot from 'riot'
+import { redirect } from './utils.js'
 
 import ac from './action-creator.js'
 import store from './store.js'
@@ -22,4 +23,5 @@ store.one(StoreMessage.STORE_INITED, () => {
     riot.mount('post-form', 'review-form', {store})
   })
   route.start(true)
+  redirect()
 })

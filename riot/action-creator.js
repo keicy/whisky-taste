@@ -1,6 +1,8 @@
 import riot from 'riot'
-import Action from './constants/action.js'
 import ax from 'axios'
+import { getURL } from './utils.js'
+
+import Action from './constants/action.js'
 
 export default riot.observable({
   initStore () {
@@ -53,7 +55,7 @@ export default riot.observable({
   },
 
   startReviewing () {
-    const url = location.href
+    const url = getURL()
     const isReviewing = true
     this.trigger(Action.START_REVIEWING, {url, isReviewing})
   },
