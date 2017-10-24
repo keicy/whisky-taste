@@ -22,19 +22,18 @@ class WhiskiesController @Inject()(
 
   def createWithReview = Action.async(json) { implicit req => {
     Logger.debug(s"POST Data = ${req.body}. @ WhiskiesController.createWithReview()")
-    val postData = req.body
-    val wJsr = (postData \ "whisky").get.validate[WhiskiesRow]
-    val rJsr = (postData \ "review").get.validate[ReviewsRow]
 
-    val res = for { // JsResult型はOption型と同様の扱い方
-      w <- wJsr
-      r <- rJsr
+    val postData = req.body
+    // JsResult型はOption型と同様の扱い方
+    val created = for {
+      w <- (postData \ "whisky").get.validate[WhiskiesRow]
+      r <- (postData \ "review").get.validate[ReviewsRow]
     } yield {
       whiskiesService.createWithReview(w, r)
     }
 
-    // res: Op[Fu(w, r)] をエラー処理しつつ返す
-    res.fold(
+    // created: JsR[Fu(w, r)] をエラー処理しつつ返す
+    created.fold(
       errors => {
         Logger.debug("Bad Request. @ WhiskiesController.createWithReview()")
         Future(
