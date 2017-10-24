@@ -20,22 +20,23 @@ class WhiskiesController @Inject()(
   implicit val whiskiesRowFormat = Json.format[WhiskiesRow]
   implicit val reviewsRowFormat = Json.format[ReviewsRow]
 
-  def createWithReview = Action.async(json) { req => {
+  def createWithReview = Action.async(json) { implicit req => {
+    Logger.debug(s"POST Data = ${req.body}. @ WhiskiesController.createWithReview()")
     val postData = req.body
-    val wJs = (postData \ "whisky").get.validate[WhiskiesRow]
-    val rJs = (postData \ "review").get.validate[ReviewsRow]
+    val wJsr = (postData \ "whisky").get.validate[WhiskiesRow]
+    val rJsr = (postData \ "review").get.validate[ReviewsRow]
 
-    val res = for { // Option型と同様の扱い方
-      w <- wJs
-      r <- rJs
+    val res = for { // JsResult型はOption型と同様の扱い方
+      w <- wJsr
+      r <- rJsr
     } yield {
       whiskiesService.createWithReview(w, r)
     }
 
-    // res: Op[F(w, r)] をエラー処理しつつ返す
+    // res: Op[Fu(w, r)] をエラー処理しつつ返す
     res.fold(
       errors => {
-        Logger.debug(s"POST Data = ${req.body}. Bad Request.")
+        Logger.debug("Bad Request. @ WhiskiesController.createWithReview()")
         Future(
           BadRequest(Json.obj(
             "status" -> "Bad Request",
@@ -44,22 +45,6 @@ class WhiskiesController @Inject()(
       },
       w_r => w_r.map(t => {
         val (w, r) = t
-
-        /*
-        val reviewWithWhisky =Json.obj(
-          "reviewId" -> r.reviewId,
-          "score" -> r.score,
-          "comment" -> r.comment,
-          "postedDate" -> r.postedDate,
-          "whiskyId" -> w.whiskyId,
-          "whiskyName" -> w.whiskyName,
-          "distilleryName" -> w.distilleryName,
-          "country" -> w.country,
-          "region" -> w.region,
-          "strength" -> w.strength
-        )
-         */
-
         Ok(Json.obj(
           "newWhiskyWithReview" -> Json.obj(
             "whisky" -> w,

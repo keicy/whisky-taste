@@ -1,6 +1,5 @@
 package services
 
-import play.api.Logger
 import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.JdbcProfile
@@ -28,8 +27,8 @@ class WhiskiesService @Inject()(
   ): Future[(WhiskiesRow, ReviewsRow)] = {
     // 処理 (更新、トランザクショナル, 同一名称ボトルがあれば追加しない)
     // 1. 同名ボトルがあるか確認
-    // 2. なければボトル追加 -> 登録ボトルobjをもらう/あればそれをもらう
-    // 3. レビュー追加 -> レビューobjをもらう
+    // 2. あればそれをもらう / なければボトル追加 -> 登録ボトルをもらう
+    // 3. レビュー登録 -> 登録レビューをもらう
     // 4. ペアにして返す
 
     val action = for {
@@ -49,7 +48,6 @@ class WhiskiesService @Inject()(
   }
 
   def create(whisky: WhiskiesRow): Future[WhiskiesRow] = {
-    Logger.debug(s"Insert Data = ${whisky}.")
     db.run(whiskies returning whiskies += whisky)
   }
 }

@@ -18,14 +18,15 @@ class ReviewsController @Inject()(
 ) extends Controller {
   implicit val locationFormat = Json.format[ReviewsRow]
 
-  def all = Action.async { implicit req =>
+  def all = Action.async {
     reviewsService.all().map( reviews => Ok(Json.obj("reviews" -> reviews)))
   }
 
-  def create = Action.async(json) { implicit req =>
+  def create = Action.async(json) { implicit req => {
+    Logger.debug(s"POST Data = ${req.body}. @ ReviewsController.create()")
     req.body.validate[ReviewsRow].fold(
       errors => {
-        Logger.debug(s"POST Data = ${req.body}. Bad Request.")
+        Logger.debug("Bad Request. @ ReviewsController.create().")
         Future(
         BadRequest(Json.obj(
           "status" -> "Bad Request",
@@ -33,12 +34,11 @@ class ReviewsController @Inject()(
         )
       },
       review => {
-        Logger.debug(s"POST Data = ${req.body}. Try to reate new review.")
         reviewsService.create(review).map { review =>
           Ok(Json.obj(
             "newReview" -> review))
         }
       }
     )
-  }
+  }}
 }
