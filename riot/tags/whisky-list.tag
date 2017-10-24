@@ -4,8 +4,12 @@ import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <whisky-list>
-  <ul each={ whiskies } >
-    <li>{ whiskyName }</li>
+  <ul>
+    <li each={ whiskies }>
+      <div class="box">
+        { whiskyName }
+      </div>
+    </li>
   </ul>
   <script>
    this.store = opts.store
