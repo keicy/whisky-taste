@@ -5,7 +5,6 @@ import StoreMessage from './constants/store-message.js'
 
 /* TODO オブジェクトとして定義したほうが良いかも？ */
 
-
 /* TODO 
  * store.data いらないっぽい.直接 store.reviews に格納すれば良い.
  * 初期化は Object.assign で.
@@ -41,12 +40,6 @@ setActionHandler(
  */
 
 setActionHandler(
-  Action.POST_NEW_REVIEW,
-  StoreMessage.REVIEWS_UPDATED,
-  newReview => store.data.reviews.push(newReview)
-)
-
-setActionHandler(
   Action.START_REVIEWING,
   StoreMessage.REVIEWING_READY,
   startReview => {
@@ -60,6 +53,21 @@ setActionHandler(
   StoreMessage.REVIEWING_QUITED,
   quitReview => {
     store.data.isReviewing = quitReview
+  }
+)
+
+setActionHandler(
+  Action.POST_NEW_REVIEW,
+  StoreMessage.REVIEWS_UPDATED,
+  newReview => store.data.reviews.push(newReview)
+)
+
+setActionHandler(
+  Action.POST_NEW_WHISKY_WITH_REVIEW,
+  StoreMessage.WHISKY_AND_REVIEW_UPDATED,
+  newWhiskyWithReview => {
+    store.data.whiskies.push(newWhiskyWithReview.whiskies)
+    store.data.reviews.push(newWhiskyWithReview.reviews)
   }
 )
 

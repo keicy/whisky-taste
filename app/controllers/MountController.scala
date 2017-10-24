@@ -11,7 +11,6 @@ import services._
 @Singleton
 class MountController @Inject()(
   implicit val ec: ExecutionContext,
-  val multiService: MultiService,
   val whiskiesService: WhiskiesService,
   val reviewsService: ReviewsService
 ) extends Controller {
@@ -22,34 +21,14 @@ class MountController @Inject()(
     Ok(views.html.index())
   }
 
-  def init = Action.async { req =>
-    val allReviewsWithWhiskyF: Future[Seq[(ReviewsRow, WhiskiesRow)]] =
-      multiService.getAllReviewsWithWhisky()
-    val allWhiskiesF: Future[Seq[WhiskiesRow]] = whiskiesService.all()
-   
+  def init = Action.async {
     for {
-      tSeq <- allReviewsWithWhiskyF
-      seq <- allWhiskiesF
+      ws <- whiskiesService.all()
+      rs <- reviewsService.all()
     } yield { //=> Future
-      val reviewWithWhiskyList = for (t <- tSeq) yield {
-        val (r, w) = t
-        Json.obj(
-          "reviewId" -> r.reviewId,
-          "score" -> r.score,
-          "comment" -> r.comment,
-          "postedDate" -> r.postedDate,
-          "whiskyId" -> w.whiskyId,
-          "whiskyName" -> w.whiskyName,
-          "distilleryName" -> w.distilleryName,
-          "country" -> w.country,
-          "region" -> w.region,
-          "strength" -> w.strength
-        )
-      }
-
       Ok(Json.obj(
-        "reviews" -> reviewWithWhiskyList,
-        "whiskies" -> seq
+        "whiskies" -> ws,
+        "reviews" -> rs
       ))
     }
   }

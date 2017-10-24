@@ -18,10 +18,38 @@ export default riot.observable({
   },
 
   postNewReview (newReview) {
-    ax.post('/reviews', newReview)
-      .then((res) => {
-        this.trigger(Action.POST_NEW_REVIEW, res.data.newReview)
-      })
+    if (newReview.whiskeyId) { // レビューのみ登録のAPIを叩く
+      const review = {
+        whiskeyId: newReview.whiskeyId,
+        score: newReview.score,
+        comment: newReview.comment,
+      }
+      ax.post('/reviews', review)
+        .then(res => {
+          this.trigger(Action.POST_NEW_REVIEW, res.data.newReview)
+        })
+    } else { // ウイスキーとレビューを登録するAPIを叩く
+      const whisky = {
+        whiskyName: newReview.whiskyName,
+        distilleryName: newReview.distilleryName,
+        country: newReview.country,
+        region: newReview.region,
+        strength: newReview.strength,
+      }
+      const review = {
+        score: newReview.score,
+        comment: newReview.comment,
+      }
+      const whiskyWithReview = {
+        whisky,
+        review,
+      }
+      console.log(whiskyWithReview)
+      ax.post('/whiskies/reviews', whiskyWithReview)
+        .then(res => {
+          this.trigger(Action.POST_NEW_WHISKY_WITH_REVIEW, res.data.newWhiskyWithReview)
+        })
+    }
   },
 
   startReviewing () {

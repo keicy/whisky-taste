@@ -16,8 +16,9 @@ CREATE TABLE reviews (
 --    , updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
--- INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (1, 1, 17, 'I love it! Aftertaste sustains long long long...');
--- INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (2, 2, 17, 'Smooth and rich! Chocolate, wood, spicy.');
+INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (1, 1, 17, 'I love it! Aftertaste sustains long long long...');
+INSERT INTO reviews (review_id, whisky_id, score, comment) VALUES (2, 2, 17, 'Smooth and rich! Chocolate, wood, spicy.');
+SELECT setval('reviews_review_id_seq', (SELECT MAX(review_id) FROM reviews)); -- 上記でPKの値を指定して登録しているため,シーケンスオブジェクトの値を補正
 
 # --- !Downs
 DROP TABLE IF EXISTS reviews;

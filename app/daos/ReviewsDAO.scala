@@ -1,6 +1,5 @@
 package daos
 
-import play.api.Logger
 import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.{ JdbcProfile, GetResult => GR }
@@ -29,7 +28,7 @@ class ReviewsDAO @Inject()(
     def ? = (reviewId, whiskyId, Rep.Some(score), comment, postedDate).shaped.<>({r=>import r._; _1.map(_=> ReviewsRow.tupled((_1, _2, _3.get, _4, _5)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     val reviewId: Rep[Option[Int]] = column[Option[Int]]("review_id", O.AutoInc, O.PrimaryKey, O.Default(None))
-    val whiskyId: Rep[Option[Int]] = column[Option[Int]]("whisky_id")
+    val whiskyId: Rep[Option[Int]] = column[Option[Int]]("whisky_id", O.Default(None))
     val score: Rep[Short] = column[Short]("score", O.Default(10))
     val comment: Rep[Option[String]] = column[Option[String]]("comment", O.Length(200,varying=true), O.Default(None))
     val postedDate: Rep[Option[LocalDate]] = column[Option[LocalDate]]("posted_date", O.AutoInc ,O.Default(None)) // DB側で値が自動挿入されるので `O.AutoInc` を付与してクエリ文に含まれないようにする
