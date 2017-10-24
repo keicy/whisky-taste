@@ -1,6 +1,6 @@
 const URL_ROOT = '#' /* RouterのURLルート */
 
-/* 画面遷移先URL取得 */
+/* 相対URL取得 */
 const getURL = (url = location.href) => url.split(URL_ROOT)[1]
 
 /* 画面遷移実行 */
