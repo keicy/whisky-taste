@@ -6,10 +6,10 @@ import { redirect } from '../utils.js'
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
-          Primary title
+          Whisky Taste
         </h1>
         <h2 class="subtitle">
-          Primary subtitle
+          Tasting Reviews For You
         </h2>
       </div>
     </div>
