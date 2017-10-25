@@ -74,20 +74,19 @@ import StoreMessage from '../constants/store-message.js'
       </div>
     </div>
 
-    <div>
-      <label>評価点数
-        <input ref="score"
-               type="range"
-               name="score"
-               min=1
-               max=20
-               value=10
-               step=1
-               required
-               oninput={ showScore }
-        >
-        <span>{ score }</span>
-      </label>
+    <div class="field">
+      <label class="label">評価点</label>
+      <input ref="score"
+             type="range"
+             name="score"
+             min=1
+             max=20
+             value=10
+             step=1
+             required
+             oninput={ showScore }
+      >
+      <span>{ score }</span>
     </div>
 
     <div class="field">
@@ -99,21 +98,21 @@ import StoreMessage from '../constants/store-message.js'
         >
       </div>
     </div>
-  </div>
 
-  <div class="field is-grouped">
-    <p class="control">
-      <a class="button is-link"
-         onclick={ postNewReview }>
-        投稿する
-      </a>
-    </p>
-    <p class="control">
-      <a class="button"
-         onclick={ quitReviewing }>
-        やめる
-      </a>
-    </p>
+    <div class="field is-grouped">
+      <p class="control">
+        <a class="button is-link"
+           onclick={ postNewReview }>
+          投稿する
+        </a>
+      </p>
+      <p class="control">
+        <a class="button"
+           onclick={ quitReviewing }>
+          やめる
+        </a>
+      </p>
+    </div>
   </div>
   
   <script>
