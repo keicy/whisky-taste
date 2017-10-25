@@ -32,7 +32,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="蒸留所名"
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -44,7 +44,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="原産国名"
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -56,7 +56,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="原産地域"
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -69,7 +69,7 @@ import StoreMessage from '../constants/store-message.js'
                step=0.1
                placeholder=47.3
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -125,7 +125,7 @@ import StoreMessage from '../constants/store-message.js'
 
    init () {
      this.whiskies = this.store.data.whiskies
-     this.knownWhiskeyId = null
+     this.knownWhiskyId = null
      this.initScore()
    }
 
@@ -133,10 +133,10 @@ import StoreMessage from '../constants/store-message.js'
      const whiskyName =  this.refs.whiskyName.value
      const whisky = this.whiskies.find(w => w.whiskyName === whiskyName)
      if (whisky) {
-       this.knownWhiskeyId = whisky.whiskyId
+       this.knownWhiskyId = whisky.whiskyId
        this.setWhiskyForm (whisky)
      } else {
-       this.knownWhiskeyId = null
+       this.knownWhiskyId = null
        this.resetWhiskyForm ()
      }
    }
@@ -168,7 +168,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    postNewReview () {
-     const whiskeyId = this.knownWhiskeyId
+     const whiskyId = this.knownWhiskyId
      const whiskyName =  this.refs.whiskyName.value
      const distilleryName = this.refs.distilleryName.value
      const country = this.refs.country.value
@@ -178,7 +178,7 @@ import StoreMessage from '../constants/store-message.js'
      const comment = this.refs.comment.value
      if (!whiskyName || !score) return
      ac.postNewReview({
-       whiskeyId,
+       whiskyId,
        whiskyName,
        distilleryName,
        country,

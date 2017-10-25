@@ -10,7 +10,7 @@ import StoreMessage from '../constants/store-message.js'
           <div class="title is-5">
             評価点
           </div>
-          <span class="" >{ score }</span> / 20 点
+          { score } / 20 点
         </div>
         <div class="column">
           <div class="title is-5">
@@ -22,6 +22,17 @@ import StoreMessage from '../constants/store-message.js'
       </div>
     </li>
   </ul>
+
+  <div class="content">
+    <table>
+      <tr each={ reviews }>
+        <td>{ whiskyName }</td>
+        <td>{ score }</td>
+        <td>{ comment }</td>
+      </tr>
+    </table>
+  </div>
+
   <script>
    this.store = opts.store
 

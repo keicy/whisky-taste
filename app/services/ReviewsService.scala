@@ -1,5 +1,6 @@
 package services
 
+import play.api.Logger
 import javax.inject.{ Inject, Singleton }
 import play.api.db.slick.{ DatabaseConfigProvider, HasDatabaseConfigProvider }
 import slick.jdbc.JdbcProfile
@@ -20,6 +21,7 @@ class ReviewsService @Inject()(
   def all(): Future[Seq[ReviewsRow]] = db.run(reviews.result)
 
   def create(review: ReviewsRow): Future[ReviewsRow] = {
+    Logger.debug(s"INSERT Data = ${review}. @ ReviewsService.create()")
     db.run(reviews returning reviews += review)
   }
 }

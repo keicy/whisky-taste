@@ -30,9 +30,9 @@ export default riot.observable({
 */
 
   postNewReview (newReview) {
-    if (newReview.whiskeyId) { // レビューのみ登録のAPIを叩く
+    if (newReview.whiskyId) { // レビューのみ登録のAPIを叩く
       const review = {
-        whiskeyId: newReview.whiskeyId,
+        whiskyId: newReview.whiskyId,
         score: newReview.score,
         comment: newReview.comment,
       }
