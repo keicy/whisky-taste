@@ -6,9 +6,12 @@ import StoreMessage from '../constants/store-message.js'
 <whisky-list>
   <ul>
     <li each={ whiskies }>
+      <!-- <a href={ '#/' + whiskyName.replace(/ /g, '_') } > -->
+      <a href={ '#/' + whiskyId + '/' +  whiskyName.replace(/ /g, '_')} >
       <div class="box">
         { whiskyName }
       </div>
+      </a>
     </li>
   </ul>
   <script>
