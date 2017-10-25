@@ -6,26 +6,24 @@ import StoreMessage from '../constants/store-message.js'
 <whisky-list>
   <ul>
     <li each={ whiskies }
-        onclick={ parent.gotoReviewList }>
-      <div class="box">
-        <div class="title is-4">
-          { whiskyName }
+        onclick={ parent.gotoReviewList }
+        class="box">
+      <div class="title is-4">
+        { whiskyName }
+      </div>
+      <div class="columns">
+        <div class="column is-2">
+          度数: { strength }％
         </div>
-        <div class="columns">
-          <div class="column is-2">
-            度数: { strength }％
-          </div>
-          <div class="column">
-            蒸留所: { distilleryName }
-          </div>
-          <div class="column">
-            原産: { country }
-          </div>
-          <div class="column">
-            産地: { region }
-          </div>
+        <div class="column">
+          蒸留所: { distilleryName }
         </div>
-
+        <div class="column">
+          原産: { country }
+        </div>
+        <div class="column">
+          産地: { region }
+        </div>
       </div>
     </li>
   </ul>

@@ -1,13 +1,27 @@
 import StoreMessage from '../constants/store-message.js'
 
 <review-list>
-  <table>
-    <tr each={ reviews }>
-      <td>{ whiskyName }</td>
-      <td>{ score }</td>
-      <td>{ comment }</td>
-    </tr>
-  </table>
+  <ul>
+    <li each={ reviews }
+        class="box">
+      <div class="columns">
+
+        <div class="column is-2">
+          <div class="title is-5">
+            評価点
+          </div>
+          <span class="" >{ score }</span> / 20 点
+        </div>
+        <div class="column">
+          <div class="title is-5">
+            テイスティングコメント
+          </div>
+          { comment }
+        </div>
+        
+      </div>
+    </li>
+  </ul>
   <script>
    this.store = opts.store
 
