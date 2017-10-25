@@ -1,6 +1,7 @@
 import StoreMessage from '../constants/store-message.js'
 
 <review-list>
+  <!--
   <ul>
     <li each={ reviews }
         class="box">
@@ -22,14 +23,22 @@ import StoreMessage from '../constants/store-message.js'
       </div>
     </li>
   </ul>
+  -->
 
-  <div class="content">
-    <table>
-      <tr each={ reviews }>
-        <td>{ whiskyName }</td>
-        <td>{ score }</td>
-        <td>{ comment }</td>
-      </tr>
+  <div>
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <td>評価点</td>
+          <td>テイスティングコメント</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr each={ reviews }>
+          <td>{ score } / 20</td>
+          <td>{ comment }</td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
