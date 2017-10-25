@@ -10,9 +10,16 @@ import StoreMessage from '../constants/store-message.js'
   </table>
   <script>
    this.store = opts.store
-   
+
+   init () {
+     this.whisky = this.store.data.targetWhisky
+     this.setReviews()
+   }
+
    setReviews() {
-     this.reviews = this.store.data.reviews
+     this.reviews = this.store.data.reviews.filter(
+       r => r.whiskyId === this.store.data.targetWhisky.whiskyId
+     )
    }
 
    updateReviews() {
@@ -23,6 +30,6 @@ import StoreMessage from '../constants/store-message.js'
    this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
 
    /* データ初期化 */
-   this.setReviews()
+   this.init()
   </script>
 </review-list>

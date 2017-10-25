@@ -1,3 +1,5 @@
+import { redirect } from '../utils.js'
+
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
@@ -16,7 +18,7 @@ import StoreMessage from '../constants/store-message.js'
    
    showReviewForm () {
      this.toggleActivate ()
-     window.location.href = '#/new-review'
+     redirect('/new-review')
    }
 
    toggleActivate () {

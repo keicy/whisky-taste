@@ -25,7 +25,7 @@ store.one(StoreMessage.STORE_INITED, () => {
     riot.mount('content', 'review-form', {store})
   })
   // TODO もう少し良くならないか？
-  route('/*/*', (whiskyId, whiskyName) => {
+  route('/*', (whiskyName) => {
     riot.mount('content', 'review-list', {store})
   })
 

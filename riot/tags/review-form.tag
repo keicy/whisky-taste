@@ -173,7 +173,7 @@ import StoreMessage from '../constants/store-message.js'
      const distilleryName = this.refs.distilleryName.value
      const country = this.refs.country.value
      const region = this.refs.region.value
-     const strength = parseInt(this.refs.strength.value)
+     const strength = parseFloat(this.refs.strength.value)
      const score = this.score
      const comment = this.refs.comment.value
      if (!whiskyName || !score) return
@@ -195,6 +195,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    returnBeforePage () {
+     console.log(this.store.data.url)
      redirect(this.store.data.url)
    }
 

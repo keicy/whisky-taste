@@ -1,5 +1,8 @@
+import { redirect } from '../utils.js'
+
 <eye-catch>
-  <section class="hero is-primary">
+  <section onclick={ gotoTop }
+           class="hero is-primary">
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
@@ -11,4 +14,9 @@
       </div>
     </div>
   </section>
+  <script>
+   gotoTop () {
+     redirect()
+   }
+  </script>
 </eye-catch>

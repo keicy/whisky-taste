@@ -12,12 +12,22 @@ export default riot.observable({
       })
   },
 
+  setTargetWhisky (whisky) {
+    this.trigger(Action.SET_TARGET_WHISKY, whisky)
+  },
+
+  removeTargetWhisky () {
+    this.trigger(Action.REMOVE_TARGET_WHISKY)
+  },
+
+  /*
   getAllReviews () {
     ax.get('/reviews')
       .then((res) => {
         this.trigger(Action.GET_ALL_REVIEWS, res.data.reviews)
       })
   },
+*/
 
   postNewReview (newReview) {
     if (newReview.whiskeyId) { // レビューのみ登録のAPIを叩く
