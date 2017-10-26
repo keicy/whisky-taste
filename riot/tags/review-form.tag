@@ -32,7 +32,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="蒸留所名"
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -44,7 +44,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="原産国名"
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -56,7 +56,7 @@ import StoreMessage from '../constants/store-message.js'
                type="text"
                placeholder="原産地域"
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
@@ -69,25 +69,24 @@ import StoreMessage from '../constants/store-message.js'
                step=0.1
                placeholder=47.3
                class="input"
-               readonly={ knownWhiskeyId }
+               readonly={ knownWhiskyId }
         >
       </div>
     </div>
 
-    <div>
-      <label>評価点数
-        <input ref="score"
-               type="range"
-               name="score"
-               min=1
-               max=20
-               value=10
-               step=1
-               required
-               oninput={ showScore }
-        >
-        <span>{ score }</span>
-      </label>
+    <div class="field">
+      <label class="label">評価点</label>
+      <input ref="score"
+             type="range"
+             name="score"
+             min=1
+             max=20
+             value=10
+             step=1
+             required
+             oninput={ showScore }
+      >
+      <span>{ score }</span>
     </div>
 
     <div class="field">
@@ -99,21 +98,21 @@ import StoreMessage from '../constants/store-message.js'
         >
       </div>
     </div>
-  </div>
 
-  <div class="field is-grouped">
-    <p class="control">
-      <a class="button is-link"
-         onclick={ postNewReview }>
-        投稿する
-      </a>
-    </p>
-    <p class="control">
-      <a class="button"
-         onclick={ quitReviewing }>
-        やめる
-      </a>
-    </p>
+    <div class="field is-grouped">
+      <p class="control">
+        <a class="button is-link"
+           onclick={ postNewReview }>
+          投稿する
+        </a>
+      </p>
+      <p class="control">
+        <a class="button"
+           onclick={ quitReviewing }>
+          やめる
+        </a>
+      </p>
+    </div>
   </div>
   
   <script>
@@ -125,7 +124,7 @@ import StoreMessage from '../constants/store-message.js'
 
    init () {
      this.whiskies = this.store.data.whiskies
-     this.knownWhiskeyId = null
+     this.knownWhiskyId = null
      this.initScore()
    }
 
@@ -133,10 +132,10 @@ import StoreMessage from '../constants/store-message.js'
      const whiskyName =  this.refs.whiskyName.value
      const whisky = this.whiskies.find(w => w.whiskyName === whiskyName)
      if (whisky) {
-       this.knownWhiskeyId = whisky.whiskyId
+       this.knownWhiskyId = whisky.whiskyId
        this.setWhiskyForm (whisky)
      } else {
-       this.knownWhiskeyId = null
+       this.knownWhiskyId = null
        this.resetWhiskyForm ()
      }
    }
@@ -168,17 +167,17 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    postNewReview () {
-     const whiskeyId = this.knownWhiskeyId
+     const whiskyId = this.knownWhiskyId
      const whiskyName =  this.refs.whiskyName.value
      const distilleryName = this.refs.distilleryName.value
      const country = this.refs.country.value
      const region = this.refs.region.value
-     const strength = parseInt(this.refs.strength.value)
+     const strength = parseFloat(this.refs.strength.value)
      const score = this.score
      const comment = this.refs.comment.value
      if (!whiskyName || !score) return
      ac.postNewReview({
-       whiskeyId,
+       whiskyId,
        whiskyName,
        distilleryName,
        country,
@@ -195,6 +194,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    returnBeforePage () {
+     console.log(this.store.data.url)
      redirect(this.store.data.url)
    }
 

@@ -1,6 +1,17 @@
+import './eye-catch.tag'
+import './tool-bar.tag'
+
 <app-layout>
-  <div>This is app-layout</div>
-  <eyecatch></eyecatch>
-  <post-form></post-form>
-  <item-list></item-list>
+  <eye-catch />
+  <!-- メインコンテンツ -->
+  <section class="columns">
+    <div class="column is-offset-2 is-8 is-offset-2">
+      <tool-bar store={ opts.store } />
+
+      <content></content>
+
+      <post-form></post-form>
+      <item-list></item-list>
+    </div>
+  </section>
 </app-layout>

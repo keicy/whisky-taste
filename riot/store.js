@@ -30,6 +30,18 @@ setActionHandler(
   initData => { store.data = initData }
 )
 
+setActionHandler(
+  Action.SET_TARGET_WHISKY,
+  StoreMessage.TARGET_WHISKY_SET,
+  whisky => { store.data.targetWhisky = whisky }
+)
+
+setActionHandler(
+  Action.REMOVE_TARGET_WHISKY,
+  StoreMessage.TARGET_WHISKY_REMOVED,
+  () => { store.data.targetWhisky = null }
+)
+
 /*
 setActionHandler(
   Action.GET_ALL_REVIEWS,
