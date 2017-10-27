@@ -215,7 +215,8 @@ import StoreMessage from '../constants/store-message.js'
    }
    #score-display {
      font-size: 1.3em;
-     margin-left: 0.3em;
+     margin-left: 0.4em;
+     font-weight: bold;
    }
   </style>
 </review-form>
