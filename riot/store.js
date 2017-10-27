@@ -42,6 +42,18 @@ setActionHandler(
   () => { store.data.targetWhisky = null }
 )
 
+setActionHandler(
+  Action.ACTIVATE_BACK_BUTTON,
+  StoreMessage.BACK_BUTTON_SET,
+  () => { store.data.isBackButtonActive = true }
+)
+
+setActionHandler(
+  Action.DEACTIVATE_BACK_BUTTON,
+  StoreMessage.BACK_BUTTON_SET,
+  () => { store.data.isBackButtonActive = false }
+)
+
 /*
 setActionHandler(
   Action.GET_ALL_REVIEWS,

@@ -20,6 +20,14 @@ export default riot.observable({
     this.trigger(Action.REMOVE_TARGET_WHISKY)
   },
 
+  activateBackButton () {
+    this.trigger(Action.ACTIVATE_BACK_BUTTON)
+  },
+
+  deactivateBackButton () {
+    this.trigger(Action.DEACTIVATE_BACK_BUTTON)
+  },
+
   /*
   getAllReviews () {
     ax.get('/reviews')
