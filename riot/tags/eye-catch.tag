@@ -19,4 +19,9 @@ import { redirect } from '../utils.js'
      redirect()
    }
   </script>
+  <style>
+   eye-catch {
+     cursor: pointer;
+   }
+  </style>
 </eye-catch>

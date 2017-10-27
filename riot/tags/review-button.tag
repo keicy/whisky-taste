@@ -4,7 +4,7 @@ import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <review-button>
-  <button class="button"
+  <button class="button is-link"
           onclick={startReviewing}
           disabled={disabled}>
     レビューを書く

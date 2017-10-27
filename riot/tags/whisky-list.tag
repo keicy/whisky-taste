@@ -51,4 +51,12 @@ import StoreMessage from '../constants/store-message.js'
    /* データ初期化 */
    this.setWhiskies()
   </script>
+  <style>
+   .box {
+     cursor: pointer;
+   }
+   .title {
+     margin-bottom: 1rem;
+   }
+  </style>
 </whisky-list>
