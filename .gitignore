@@ -10,7 +10,6 @@ ref/
 
 node_modules/
 npm-debug.log
-bundle.js
 
 h2db.mv.db
 h2db.trace.db
