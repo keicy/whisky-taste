@@ -67,4 +67,7 @@ import StoreMessage from '../constants/store-message.js'
    /* データ初期化 */
    this.init()
   </script>
+
+  <style>
+  </style>
 </review-list>

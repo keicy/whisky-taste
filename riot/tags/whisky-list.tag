@@ -58,5 +58,11 @@ import StoreMessage from '../constants/store-message.js'
    .title {
      margin-bottom: 1rem;
    }
+
+   @media (max-width: 768px) {
+     .column {
+       padding: 0.25rem 1.75rem;
+     }
+   }
   </style>
 </whisky-list>

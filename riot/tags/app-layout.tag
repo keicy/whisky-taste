@@ -7,11 +7,17 @@ import './tool-bar.tag'
   <section class="columns">
     <div class="column is-offset-2 is-8 is-offset-2">
       <tool-bar store={ opts.store } />
-
-      <content></content>
-
-      <post-form></post-form>
-      <item-list></item-list>
+      <div id="wrapper">
+        <content />
+      </div>
     </div>
   </section>
+
+  <style>
+   @media (max-width: 768px) {
+     #wrapper {
+       margin: 0 0.3em;
+     }
+   }
+  </style>
 </app-layout>
