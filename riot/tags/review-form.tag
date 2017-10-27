@@ -76,26 +76,29 @@ import StoreMessage from '../constants/store-message.js'
 
     <div class="field">
       <label class="label">評価点</label>
-      <input ref="score"
-             type="range"
-             name="score"
-             min=1
-             max=20
-             value=10
-             step=1
-             required
-             oninput={ showScore }
-      >
-      <span>{ score }</span>
+      <div id="score">
+        <input ref="score"
+               type="range"
+               name="score"
+               min=1
+               max=20
+               value=10
+               step=1
+               required
+               oninput={ showScore }
+        >
+        <div id="score-display">
+          { score }
+        </div>
+      </div>
     </div>
 
     <div class="field">
       <label class="label">テイスティングコメント</label>
       <div class="control">
-        <input ref="comment"
-               type="text"
-               class="textarea"
-        >
+        <textarea ref="comment"
+                  class="textarea">
+        </textarea>
       </div>
     </div>
 
@@ -205,4 +208,15 @@ import StoreMessage from '../constants/store-message.js'
    /* データ初期化 */
    this.init()
   </script>
+
+  <style>
+   #score {
+     display: flex;
+   }
+   #score-display {
+     font-size: 1.3em;
+     margin-left: 0.4em;
+     font-weight: bold;
+   }
+  </style>
 </review-form>

@@ -19,4 +19,15 @@ import { redirect } from '../utils.js'
      redirect()
    }
   </script>
+  <style>
+   eye-catch {
+     cursor: pointer;
+   }
+
+   @media (max-width: 768px) {
+     .hero-body {
+       padding: 1rem 1.5rem;
+     }
+   }
+  </style>
 </eye-catch>
