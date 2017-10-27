@@ -57,14 +57,6 @@ import StoreMessage from '../constants/store-message.js'
      )
    }
 
-   /*
-   updateReviews () {
-     this.setReviews()
-     this.update()
-   }
-   */
-
-   // this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
    this.on('before-mount', () => {
      ac.activateBackButton()
      this.setReviews()
