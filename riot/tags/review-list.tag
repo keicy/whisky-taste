@@ -30,13 +30,13 @@ import StoreMessage from '../constants/store-message.js'
     <table class="table is-fullwidth">
       <thead>
         <tr>
-          <td>評価点</td>
+          <td class="score">評価点<br>(20点)</td>
           <td>テイスティングコメント</td>
         </tr>
       </thead>
       <tbody>
         <tr each={ reviews }>
-          <td>{ score } / 20</td>
+          <td class="score">{ score }</td>
           <td>{ comment }</td>
         </tr>
       </tbody>
@@ -69,5 +69,16 @@ import StoreMessage from '../constants/store-message.js'
   </script>
 
   <style>
+   .score {
+     width: 5em;
+     text-align: center;
+   }
+
+   tbody .score {
+     font-weight: bold;
+     font-size: 1.25em;
+     padding: 0.25em 0.5em;
+     vertical-align: middle;
+   }
   </style>
 </review-list>
