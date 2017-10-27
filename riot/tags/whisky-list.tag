@@ -46,7 +46,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateWhiskies)
-   this.on('before-mount', ac.removeTargetWhisky) 
+   this.on('before-mount', () => ac.removeTargetWhisky())
 
    /* データ初期化 */
    this.setWhiskies()

@@ -1,3 +1,4 @@
+import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <review-list>
@@ -50,18 +51,26 @@ import StoreMessage from '../constants/store-message.js'
      this.setReviews()
    }
 
-   setReviews() {
+   setReviews () {
      this.reviews = this.store.data.reviews.filter(
        r => r.whiskyId === this.store.data.targetWhisky.whiskyId
      )
    }
 
-   updateReviews() {
+   /*
+   updateReviews () {
      this.setReviews()
      this.update()
    }
+   */
 
-   this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
+   // this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
+   this.on('before-mount', () => {
+     ac.activateBackButton()
+     this.setReviews()
+   })
+
+   this.on('unmount', () => { ac.deactivateBackButton() })
 
    /* データ初期化 */
    this.init()
