@@ -13,6 +13,9 @@
   },
   "license": "ISC",
   "author": "keicy",
+  "engines": {
+    "node": "^6.11.2"
+  },
   "main": "index.js",
   "directories": {
     "test": "test"
