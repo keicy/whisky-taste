@@ -1,6 +1,6 @@
 <whisky-box>
   <div class="box">
-    <div class="title is-4">
+    <div id="title" class="title is-4">
       { whisky.whiskyName }
     </div>
     <div class="columns">
@@ -22,4 +22,19 @@
   <script>
    this.whisky = opts.whisky
   </script>
+  <style>
+   .box {
+     margin-bottom: 1em;
+   }
+
+   #title {
+     margin-bottom: 1rem;
+   }
+
+   @media (max-width: 768px) {
+     .column {
+       padding: 0.25rem 1.75rem;
+     }
+   }
+  </style>
 </whisky-box>

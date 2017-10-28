@@ -57,14 +57,9 @@ import './whisky-box.tag'
    .box {
      cursor: pointer;
    }
-   .title {
-     margin-bottom: 1rem;
-   }
 
-   @media (max-width: 768px) {
-     .column {
-       padding: 0.25rem 1.75rem;
-     }
+   li:not(:last-child) {
+     margin-bottom: 0.5em;
    }
   </style>
 </whisky-list>
