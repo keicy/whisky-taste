@@ -4,11 +4,18 @@ import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <review-button>
-  <button class="button is-link"
-          onclick={saveURL}
-          disabled={disabled}>
-    レビューを書く
-  </button>
+  <div>
+    <button class="button is-link"
+            onclick={saveURL}
+            hide={isReviewing}>
+      レビューを書く
+    </button>
+    <button class="button"
+            onclick={returnBeforePage}
+            show={isReviewing}>
+      レビューをやめる
+    </button>
+  </div>
   <script >
    this.store = opts.store
 
@@ -16,12 +23,16 @@ import StoreMessage from '../constants/store-message.js'
      ac.saveURL()
    }
 
+   returnBeforePage () {
+     redirect(this.store.data.url)
+   }
+
    showReviewForm () {
      redirect('/new-review')
    }
 
    toggleActivate () {
-     this.disabled = this.store.data.isReviewing
+     this.isReviewing = this.store.data.isReviewing
      this.update()
    }
 
@@ -29,6 +40,6 @@ import StoreMessage from '../constants/store-message.js'
    this.store.on(StoreMessage.REVIEWING_ENTERED, this.toggleActivate)
    this.store.on(StoreMessage.REVIEWING_EXITED, this.toggleActivate)
 
-   this.disabled = false
+   this.isReviewing = false
   </script>
 </review-button>
