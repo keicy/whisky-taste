@@ -1,32 +1,11 @@
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
+import './whisky-box.tag'
+
 <review-list>
-  <!--
-  <ul>
-    <li each={ reviews }
-        class="box">
-      <div class="columns">
-
-        <div class="column is-2">
-          <div class="title is-5">
-            評価点
-          </div>
-          { score } / 20 点
-        </div>
-        <div class="column">
-          <div class="title is-5">
-            テイスティングコメント
-          </div>
-          { comment }
-        </div>
-        
-      </div>
-    </li>
-  </ul>
-  -->
-
   <div>
+    <whisky-box whisky={whisky} />
     <table class="table is-fullwidth">
       <thead>
         <tr>

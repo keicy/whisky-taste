@@ -1,30 +1,14 @@
 import route from 'riot-route'
-
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
+
+import './whisky-box.tag'
 
 <whisky-list>
   <ul>
     <li each={ whiskies }
-        onclick={ parent.gotoReviewList }
-        class="box">
-      <div class="title is-4">
-        { whiskyName }
-      </div>
-      <div class="columns">
-        <div class="column is-2">
-          度数: { strength }％
-        </div>
-        <div class="column">
-          蒸留所: { distilleryName }
-        </div>
-        <div class="column">
-          原産: { country }
-        </div>
-        <div class="column">
-          産地: { region }
-        </div>
-      </div>
+        onclick={ parent.gotoReviewList }>
+      <whisky-box whisky={this} />
     </li>
   </ul>
   <script>
