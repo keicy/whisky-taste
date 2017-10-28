@@ -1,4 +1,4 @@
-import route from 'riot-route'
+import { redirect } from '../utils.js'
 
 <eye-catch>
   <section onclick={ gotoTop }
@@ -16,7 +16,7 @@ import route from 'riot-route'
   </section>
   <script>
    gotoTop () {
-     route('/')
+     redirect()
    }
   </script>
   <style>
