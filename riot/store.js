@@ -57,30 +57,25 @@ setActionHandler(
 setActionHandler(
   Action.UPDATE_WHISKY_SEARCH_WORD,
   StoreMessage.WHISKY_SEARCH_WORD_UPDATED,
-  searchWord => {
-    store.data.whiskySearchWord = searchWord
-  }
+  searchWord => { store.data.whiskySearchWord = searchWord }
 )
 
-//TODO FIX
 setActionHandler(
   Action.REMOVE_TARGET_WHISKY,
   StoreMessage.TARGET_WHISKY_REMOVED,
-  () => { store.data.targetWhisky = null }
+  rem => { store.data.targetWhisky = rem }
 )
 
-//TODO FIX
 setActionHandler(
   Action.ACTIVATE_BACK_BUTTON,
   StoreMessage.BACK_BUTTON_SET,
-  () => { store.data.isBackButtonActive = true }
+  t => { store.data.isBackButtonActive = t }
 )
 
-//TODO FIX
 setActionHandler(
   Action.DEACTIVATE_BACK_BUTTON,
   StoreMessage.BACK_BUTTON_SET,
-  () => { store.data.isBackButtonActive = false }
+  f => { store.data.isBackButtonActive = f }
 )
 
 /*
@@ -95,25 +90,19 @@ setActionHandler(
 setActionHandler(
   Action.SAVE_URL,
   StoreMessage.URL_SAVED,
-  url => {
-    store.data.url = url
-  }
+  url => { store.data.url = url }
 )
 
 setActionHandler(
   Action.ENTER_REVIEWING,
   StoreMessage.REVIEWING_ENTERED,
-  t => {
-    store.data.isReviewing = t
-  }
+  t => { store.data.isReviewing = t }
 )
 
 setActionHandler(
   Action.EXIT_REVIEWING,
   StoreMessage.REVIEWING_EXITED,
-  f => {
-    store.data.isReviewing = f
-  }
+  f => { store.data.isReviewing = f }
 )
 
 setActionHandler(
