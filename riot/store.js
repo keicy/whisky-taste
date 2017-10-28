@@ -36,7 +36,6 @@ setActionHandler(
   whisky => { store.data.targetWhisky = whisky }
 )
 
-//
 setActionHandler(
   Action.ACTIVATE_WHISKY_SEARCH,
   StoreMessage.WHISKY_SEARCH_SET,
@@ -45,7 +44,7 @@ setActionHandler(
     store.data.whiskySearchWord = activate.whiskySearchWord
   }
 )
-//
+
 setActionHandler(
   Action.DEACTIVATE_WHISKY_SEARCH,
   StoreMessage.WHISKY_SEARCH_SET,
@@ -54,7 +53,7 @@ setActionHandler(
     store.data.whiskySearchWord = deactivate.whiskySearchWord
   }
 )
-//
+
 setActionHandler(
   Action.UPDATE_WHISKY_SEARCH_WORD,
   StoreMessage.WHISKY_SEARCH_WORD_UPDATED,
