@@ -67,6 +67,7 @@ import StoreMessage from '../constants/store-message.js'
         <input ref="strength"
                type="number"
                step=0.1
+               pattern="^\d{1,2}(\.\d)?$"
                placeholder=47.3
                class="input"
                readonly={ knownWhiskyId }
