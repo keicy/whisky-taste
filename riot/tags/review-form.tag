@@ -15,7 +15,7 @@ import StoreMessage from '../constants/store-message.js'
                placeholder="ダブルクリックで選択/入力で新規追加"
                class="input"
                required
-               onchange={ whiskyNameSelected }
+               oninput={ whiskyNameSelected }
         >
         <datalist id="whiskies">
           <option each={ whiskies }>
