@@ -2,7 +2,7 @@ import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <whisky-search show={isActive}>
-  <div class="control">
+  <div class="wrapper control">
     <input ref="whiskySearch"
            type="text"
            placeholder="ウイスキー検索"
@@ -27,4 +27,9 @@ import StoreMessage from '../constants/store-message.js'
 
    this.isActive = false
   </script>
+  <style>
+   .wrapper {
+     margin-left: 0.1em;
+   }
+  </style>
 </whisky-search>
