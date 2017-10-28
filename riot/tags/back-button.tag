@@ -1,4 +1,4 @@
-import { redirect } from '../utils.js'
+import route from 'riot-route'
 
 import StoreMessage from '../constants/store-message.js'
 
@@ -21,7 +21,7 @@ import StoreMessage from '../constants/store-message.js'
    }
    
    backToWhiskyList() {
-     redirect()
+     route('/')
    }
 
    this.store.on(StoreMessage.BACK_BUTTON_SET, this.updateIsActive)
