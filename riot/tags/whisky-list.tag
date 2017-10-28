@@ -1,4 +1,4 @@
-import route from 'riot-route'
+import { redirect } from '../utils.js'
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
@@ -34,7 +34,7 @@ import './whisky-box.tag'
    gotoReviewList(e) {
      const whisky = e.item
      ac.setTargetWhisky(whisky)
-     route('/' + whisky.whiskyName.replace(/ /g, '_'))
+     redirect('/' + whisky.whiskyName.replace(/ /g, '_'))
    }
 
    // 現状マウント時にstoreからデータ取得しなおしているのでなくて良い...
