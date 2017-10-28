@@ -1,4 +1,4 @@
-import { redirect } from '../utils.js'
+import route from 'riot-route'
 
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
@@ -42,7 +42,7 @@ import StoreMessage from '../constants/store-message.js'
    gotoReviewList(e) {
      const whisky = e.item
      ac.setTargetWhisky(whisky)
-     redirect('/' + whisky.whiskyName.replace(/ /g, '_'))
+     route('/' + whisky.whiskyName.replace(/ /g, '_'))
    }
 
    this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateWhiskies)

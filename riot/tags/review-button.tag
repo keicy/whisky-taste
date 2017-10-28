@@ -1,4 +1,4 @@
-import { redirect } from '../utils.js'
+import route from 'riot-route'
 
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
@@ -24,11 +24,11 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    returnBeforePage () {
-     redirect(this.store.data.url)
+     route(this.store.data.url)
    }
 
    showReviewForm () {
-     redirect('/new-review')
+     route('/new-review')
    }
 
    toggleActivate () {
