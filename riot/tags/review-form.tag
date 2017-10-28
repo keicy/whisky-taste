@@ -111,7 +111,7 @@ import StoreMessage from '../constants/store-message.js'
       </p>
       <p class="control">
         <a class="button"
-           onclick={ quitReviewing }>
+           onclick={ returnBeforePage }>
           やめる
         </a>
       </p>
@@ -191,19 +191,20 @@ import StoreMessage from '../constants/store-message.js'
      })
    }
 
-   quitReviewing () {
-     // this.resetForm() // TODO いらない模様（毎回新しくマウントされるので）
-     ac.quitReviewing()
-   }
+   /*
+      quitReviewing () {
+      // this.resetForm() // TODO いらない模様（毎回新しくマウントされるので）
+      ac.quitReviewing()
+      }
+    */
 
    returnBeforePage () {
-     console.log(this.store.data.url)
      redirect(this.store.data.url)
    }
 
-   this.store.on(StoreMessage.REVIEWS_UPDATED, this.quitReviewing)
-   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.quitReviewing)
-   this.store.on(StoreMessage.REVIEWING_QUITED, this.returnBeforePage)
+   this.store.on(StoreMessage.REVIEWS_UPDATED, this.returnBeforePage)
+   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.returnBeforePage)
+   this.on('unmount', () => ac.quitReviewing())
 
    /* データ初期化 */
    this.init()
