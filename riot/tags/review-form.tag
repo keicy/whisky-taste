@@ -204,7 +204,8 @@ import StoreMessage from '../constants/store-message.js'
 
    this.store.on(StoreMessage.REVIEWS_UPDATED, this.returnBeforePage)
    this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.returnBeforePage)
-   this.on('unmount', () => ac.quitReviewing())
+   this.on('before-mount', () => ac.enterReviewing())
+   this.on('unmount', () => ac.exitReviewing())
 
    /* データ初期化 */
    this.init()

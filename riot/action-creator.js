@@ -72,14 +72,18 @@ export default riot.observable({
     }
   },
 
-  startReviewing () {
+  saveURL () {
     const url = getURL()
-    const isReviewing = true
-    this.trigger(Action.START_REVIEWING, {url, isReviewing})
+    this.trigger(Action.SAVE_URL, url)
   },
 
-  quitReviewing () {
+  enterReviewing () {
+    const isReviewing = true
+    this.trigger(Action.ENTER_REVIEWING, isReviewing)
+  },
+
+  exitReviewing () {
     const isReviewing = false
-    this.trigger(Action.QUIT_REVIEWING, isReviewing)
+    this.trigger(Action.EXIT_REVIEWING, isReviewing)
   },
 })
