@@ -31,7 +31,15 @@ import StoreMessage from '../constants/store-message.js'
    this.store = opts.store
 
    setWhiskies() {
-     this.whiskies = this.store.data.whiskies
+     const whiskies = this.store.data.whiskies
+     const searchWord = this.store.data.whiskySearchWord
+     if (searchWord) {
+       this.whiskies = whiskies.filter(
+         w => w.whiskyName.toLowerCase().includes(searchWord.toLowerCase())
+       )
+     } else {
+       this.whiskies = whiskies
+     }
    }
 
    updateWhiskies() {
@@ -45,9 +53,19 @@ import StoreMessage from '../constants/store-message.js'
      route('/' + whisky.whiskyName.replace(/ /g, '_'))
    }
 
-   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateWhiskies)
-   this.on('before-mount', () => ac.removeTargetWhisky())
+   // 現状マウント時にstoreからデータ取得しなおしているのでなくて良い...
+   // this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateWhiskies)
+   this.store.on(StoreMessage.WHISKY_SEARCH_WORD_UPDATED, this.updateWhiskies)
 
+   this.on('before-mount', () => {
+     ac.activateWhiskySearch()
+     ac.removeTargetWhisky()
+   })
+
+   this.on('unmount', () => {
+     ac.deactivateWhiskySearch()
+   })
+   
    /* データ初期化 */
    this.setWhiskies()
   </script>

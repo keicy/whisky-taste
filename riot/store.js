@@ -37,17 +37,46 @@ setActionHandler(
 )
 
 setActionHandler(
+  Action.ACTIVATE_WHISKY_SEARCH,
+  StoreMessage.WHISKY_SEARCH_SET,
+  activate => {
+    store.data.isWhiskySearchActive = activate.isWhiskySearchActive
+    store.data.whiskySearchWord = activate.whiskySearchWord
+  }
+)
+
+setActionHandler(
+  Action.DEACTIVATE_WHISKY_SEARCH,
+  StoreMessage.WHISKY_SEARCH_SET,
+  deactivate => {
+    store.data.isWhiskySearchActive = deactivate.isWhiskySearchActive
+    store.data.whiskySearchWord = deactivate.whiskySearchWord
+  }
+)
+
+setActionHandler(
+  Action.UPDATE_WHISKY_SEARCH_WORD,
+  StoreMessage.WHISKY_SEARCH_WORD_UPDATED,
+  searchWord => {
+    store.data.whiskySearchWord = searchWord
+  }
+)
+
+//TODO FIX
+setActionHandler(
   Action.REMOVE_TARGET_WHISKY,
   StoreMessage.TARGET_WHISKY_REMOVED,
   () => { store.data.targetWhisky = null }
 )
 
+//TODO FIX
 setActionHandler(
   Action.ACTIVATE_BACK_BUTTON,
   StoreMessage.BACK_BUTTON_SET,
   () => { store.data.isBackButtonActive = true }
 )
 
+//TODO FIX
 setActionHandler(
   Action.DEACTIVATE_BACK_BUTTON,
   StoreMessage.BACK_BUTTON_SET,

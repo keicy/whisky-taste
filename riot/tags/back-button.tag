@@ -2,9 +2,8 @@ import route from 'riot-route'
 
 import StoreMessage from '../constants/store-message.js'
 
-<back-button>
+<back-button show={isActive}>
   <button class="button"
-          show={isActive}
           onclick={backToWhiskyList}>
     TOPに戻る
   </button>

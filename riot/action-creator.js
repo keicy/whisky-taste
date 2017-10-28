@@ -16,14 +16,39 @@ export default riot.observable({
     this.trigger(Action.SET_TARGET_WHISKY, whisky)
   },
 
+  activateWhiskySearch () {
+    const isWhiskySearchActive = true
+    const whiskySearchWord = ''
+    this.trigger(Action.ACTIVATE_WHISKY_SEARCH, {
+      isWhiskySearchActive,
+      whiskySearchWord,
+    })
+  },
+
+  deactivateWhiskySearch () {
+    const isWhiskySearchActive = false
+    const whiskySearchWord = ''
+    this.trigger(Action.DEACTIVATE_WHISKY_SEARCH, {
+      isWhiskySearchActive,
+      whiskySearchWord,
+    })
+  },
+
+  updateWhiskySearchWord (searchWord) {
+    this.trigger(Action.UPDATE_WHISKY_SEARCH_WORD, searchWord)
+  },
+
+  //TODO FIX
   removeTargetWhisky () {
     this.trigger(Action.REMOVE_TARGET_WHISKY)
   },
 
+  //TODO FIX
   activateBackButton () {
     this.trigger(Action.ACTIVATE_BACK_BUTTON)
   },
 
+  //TODO FIX
   deactivateBackButton () {
     this.trigger(Action.DEACTIVATE_BACK_BUTTON)
   },

@@ -18,9 +18,9 @@ import StoreMessage from '../constants/store-message.js'
                onchange={ whiskyNameSelected }
         >
         <datalist id="whiskies">
-          <virtual each={ whiskies }>
-            <option>{ whiskyName }</option>
-          </virtual>
+          <option each={ whiskies }>
+            { whiskyName }
+          </option>
         </datalist>
       </div>
     </div>
