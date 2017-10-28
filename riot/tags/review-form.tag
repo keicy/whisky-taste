@@ -4,8 +4,8 @@ import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
 <review-form>
-  <!-- TODO formタグを使ったほうが必須項目に警告でるので良いかも -->
-  <div>
+  <form onsubmit={ postNewReview }>
+
     <div class="field">
       <label class="label">ボトル名</label>
       <div class="control">
@@ -102,21 +102,15 @@ import StoreMessage from '../constants/store-message.js'
       </div>
     </div>
 
-    <div class="field is-grouped">
+    <div class="field">
       <p class="control">
-        <a class="button is-link"
-           onclick={ postNewReview }>
-          投稿する
-        </a>
-      </p>
-      <p class="control">
-        <a class="button"
-           onclick={ returnBeforePage }>
-          やめる
-        </a>
+        <input type="submit"
+               value="投稿する"
+               class="button is-link">
       </p>
     </div>
-  </div>
+
+  </form>
   
   <script>
    this.store = opts.store
@@ -169,7 +163,8 @@ import StoreMessage from '../constants/store-message.js'
      this.refs.comment.value = ''
    }
 
-   postNewReview () {
+   postNewReview (e) {
+     e.preventDefault()
      const whiskyId = this.knownWhiskyId
      const whiskyName =  this.refs.whiskyName.value
      const distilleryName = this.refs.distilleryName.value
