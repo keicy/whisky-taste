@@ -34,7 +34,9 @@ import StoreMessage from '../constants/store-message.js'
      const whiskies = this.store.data.whiskies
      const searchWord = this.store.data.whiskySearchWord
      if (searchWord) {
-       this.whiskies = whiskies.filter(w => w.whiskyName.includes(searchWord))
+       this.whiskies = whiskies.filter(
+         w => w.whiskyName.toLowerCase().includes(searchWord.toLowerCase())
+       )
      } else {
        this.whiskies = whiskies
      }

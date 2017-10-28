@@ -18,6 +18,7 @@ import StoreMessage from '../constants/store-message.js'
    }
 
    toggleActivate () {
+     this.refs.whiskySearch.value = ''
      this.isActive = this.store.data.isWhiskySearchActive
      this.update()
    }
