@@ -62,25 +62,22 @@ setActionHandler(
   }
 )
 
-//TODO FIX
 setActionHandler(
   Action.REMOVE_TARGET_WHISKY,
   StoreMessage.TARGET_WHISKY_REMOVED,
-  () => { store.data.targetWhisky = null }
+  rem => { store.data.targetWhisky = rem }
 )
 
-//TODO FIX
 setActionHandler(
   Action.ACTIVATE_BACK_BUTTON,
   StoreMessage.BACK_BUTTON_SET,
-  () => { store.data.isBackButtonActive = true }
+  t => { store.data.isBackButtonActive = t }
 )
 
-//TODO FIX
 setActionHandler(
   Action.DEACTIVATE_BACK_BUTTON,
   StoreMessage.BACK_BUTTON_SET,
-  () => { store.data.isBackButtonActive = false }
+  f => { store.data.isBackButtonActive = f }
 )
 
 /*

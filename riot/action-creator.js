@@ -38,19 +38,19 @@ export default riot.observable({
     this.trigger(Action.UPDATE_WHISKY_SEARCH_WORD, searchWord)
   },
 
-  //TODO FIX
   removeTargetWhisky () {
-    this.trigger(Action.REMOVE_TARGET_WHISKY)
+    const rem = null
+    this.trigger(Action.REMOVE_TARGET_WHISKY, rem)
   },
 
-  //TODO FIX
   activateBackButton () {
-    this.trigger(Action.ACTIVATE_BACK_BUTTON)
+    const isBackButtonActive = true
+    this.trigger(Action.ACTIVATE_BACK_BUTTON, isBackButtonActive)
   },
 
-  //TODO FIX
   deactivateBackButton () {
-    this.trigger(Action.DEACTIVATE_BACK_BUTTON)
+    const isBackButtonActive = false
+    this.trigger(Action.DEACTIVATE_BACK_BUTTON, isBackButtonActive)
   },
 
   /*
