@@ -57,9 +57,7 @@ setActionHandler(
 setActionHandler(
   Action.UPDATE_WHISKY_SEARCH_WORD,
   StoreMessage.WHISKY_SEARCH_WORD_UPDATED,
-  searchWord => {
-    store.data.whiskySearchWord = searchWord
-  }
+  searchWord => { store.data.whiskySearchWord = searchWord }
 )
 
 setActionHandler(
@@ -92,25 +90,19 @@ setActionHandler(
 setActionHandler(
   Action.SAVE_URL,
   StoreMessage.URL_SAVED,
-  url => {
-    store.data.url = url
-  }
+  url => { store.data.url = url }
 )
 
 setActionHandler(
   Action.ENTER_REVIEWING,
   StoreMessage.REVIEWING_ENTERED,
-  t => {
-    store.data.isReviewing = t
-  }
+  t => { store.data.isReviewing = t }
 )
 
 setActionHandler(
   Action.EXIT_REVIEWING,
   StoreMessage.REVIEWING_EXITED,
-  f => {
-    store.data.isReviewing = f
-  }
+  f => { store.data.isReviewing = f }
 )
 
 setActionHandler(
