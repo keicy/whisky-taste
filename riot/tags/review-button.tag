@@ -5,19 +5,18 @@ import StoreMessage from '../constants/store-message.js'
 
 <review-button>
   <button class="button is-link"
-          onclick={startReviewing}
+          onclick={saveURL}
           disabled={disabled}>
     レビューを書く
   </button>
   <script >
    this.store = opts.store
 
-   startReviewing () {
-     ac.startReviewing()
+   saveURL () {
+     ac.saveURL()
    }
-   
+
    showReviewForm () {
-     this.toggleActivate ()
      redirect('/new-review')
    }
 
@@ -25,9 +24,10 @@ import StoreMessage from '../constants/store-message.js'
      this.disabled = this.store.data.isReviewing
      this.update()
    }
-   
-   this.store.on(StoreMessage.REVIEWING_READY, this.showReviewForm)
-   this.store.on(StoreMessage.REVIEWING_QUITED, this.toggleActivate)
+
+   this.store.on(StoreMessage.URL_SAVED, this.showReviewForm)
+   this.store.on(StoreMessage.REVIEWING_ENTERED, this.toggleActivate)
+   this.store.on(StoreMessage.REVIEWING_EXITED, this.toggleActivate)
 
    this.disabled = false
   </script>

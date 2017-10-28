@@ -64,19 +64,26 @@ setActionHandler(
  */
 
 setActionHandler(
-  Action.START_REVIEWING,
-  StoreMessage.REVIEWING_READY,
-  startReview => {
-    store.data.url = startReview.url
-    store.data.isReviewing = startReview.isReviewing
+  Action.SAVE_URL,
+  StoreMessage.URL_SAVED,
+  url => {
+    store.data.url = url
   }
 )
 
 setActionHandler(
-  Action.QUIT_REVIEWING,
-  StoreMessage.REVIEWING_QUITED,
-  quitReview => {
-    store.data.isReviewing = quitReview
+  Action.ENTER_REVIEWING,
+  StoreMessage.REVIEWING_ENTERED,
+  t => {
+    store.data.isReviewing = t
+  }
+)
+
+setActionHandler(
+  Action.EXIT_REVIEWING,
+  StoreMessage.REVIEWING_EXITED,
+  f => {
+    store.data.isReviewing = f
   }
 )
 
