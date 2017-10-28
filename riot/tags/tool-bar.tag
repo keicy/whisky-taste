@@ -1,30 +1,18 @@
 import './review-button.tag'
+import './whisky-search.tag'
 import './back-button.tag'
 
 <tool-bar>
   <nav>
-    <!-- Left side -->
+    <!-- 左側 -->
     <div>
       <review-button store={ opts.store } />
     </div>
 
-    <!-- Right side -->
+    <!-- 右側 -->
     <div>
+      <whisky-search store={ opts.store } />
       <back-button store={ opts.store } />
-      <!-- 検索フィード
-           // store.data.searchWhiskyを設定、一覧側でこれに絞り込みで良い。
-           // ボタン押下がめんどくさいのでインクリメンタルサーチで
-      <div class="field has-addons">
-        <p class="control">
-          <input class="input" type="text" placeholder="Find a post">
-        </p>
-        <p class="control">
-          <button class="button">
-            Search
-          </button>
-        </p>
-      </div>
-      -->
     </div>
   </nav>
   <style>
@@ -34,7 +22,7 @@ import './back-button.tag'
      justify-content: space-between;
    }
 
-   .button {
+   .button, .input {
      border-top: none;
      border-radius: 0 0 5px 5px;
    }
