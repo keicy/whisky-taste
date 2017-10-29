@@ -1,4 +1,4 @@
-import { redirect } from '../utils.js'
+import { redirect, getReviewListURL } from '../utils.js'
 import ac from '../action-creator.js'
 import StoreMessage from '../constants/store-message.js'
 
@@ -193,13 +193,29 @@ import StoreMessage from '../constants/store-message.js'
       }
     */
 
-   returnBeforePage () {
-     redirect(this.store.data.url)
+   gotoReviewList (review) {
+     const whiskyId = review.whiskyId
+     const whiskyName = this.store.data.whiskies.find(
+       w => w.whiskyId === whiskyId
+     ).whiskyName
+     redirect(getReviewListURL({
+       whiskyId,
+       whiskyName,
+     }))
    }
 
-   this.store.on(StoreMessage.REVIEWS_UPDATED, this.returnBeforePage)
-   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.returnBeforePage)
+   gotoReviewList_ (whisky) {
+     redirect(getReviewListURL(whisky))
+   }
+
+   this.store.on(StoreMessage.REVIEWS_UPDATED,
+                 review => this.gotoReviewList(review))
+
+   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED,
+                 newWhiskyWithReview => this.gotoReviewList_(newWhiskyWithReview.whisky))
+
    this.on('before-mount', () => ac.enterReviewing())
+
    this.on('unmount', () => ac.exitReviewing())
 
    /* データ初期化 */
