@@ -32,5 +32,5 @@ store.one(StoreMessage.STORE_INITED, () => {
   })
 
   route.start(true)
-  redirect()
+  // redirect()
 })
