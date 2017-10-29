@@ -20,7 +20,7 @@ function setActionHandler (
 ) {
   ac.on(action, data => {
     updateFn(data)
-    store.trigger(storeMsg)
+    store.trigger(storeMsg, data)
   })
 }
 
