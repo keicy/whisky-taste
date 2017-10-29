@@ -33,17 +33,17 @@ import './whisky-box.tag'
 
    gotoReviewList(e) {
      const whisky = e.item
-     ac.setTargetWhisky(whisky)
-     redirect('/' + whisky.whiskyName.replace(/ /g, '_'))
+     // ac.setTargetWhisky(whisky) // TODO REMOVE
+     redirect('/' + whisky.whiskyId + '_' + whisky.whiskyName.replace(/ /g, '_'))
    }
 
-   // 現状マウント時にstoreからデータ取得しなおしているのでなくて良い...
+   // 現状マウント時にstoreからデータ取得しなおしているのでなくて良い.
    // this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateWhiskies)
    this.store.on(StoreMessage.WHISKY_SEARCH_WORD_UPDATED, this.updateWhiskies)
 
    this.on('before-mount', () => {
      ac.activateWhiskySearch()
-     ac.removeTargetWhisky()
+     // ac.removeTargetWhisky()
    })
 
    this.on('unmount', () => {

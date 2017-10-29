@@ -20,13 +20,15 @@ store.one(StoreMessage.STORE_INITED, () => {
   route('/', () => {
     riot.mount('content', 'whisky-list', {store})
   })
-  // TODO /reviews/new ?
   route('/new-review', () => {
     riot.mount('content', 'review-form', {store})
   })
-  // TODO もう少し良くならないか？
-  route('/*', (whiskyName) => {
-    riot.mount('content', 'review-list', {store})
+  route('/*', (whiskyIdWithName) => {
+    const whiskyId = parseInt(whiskyIdWithName.slice(0, 1))
+    riot.mount('content', 'review-list', {
+      store,
+      whiskyId,
+    })
   })
 
   route.start(true)

@@ -24,24 +24,36 @@ import './whisky-box.tag'
 
   <script>
    this.store = opts.store
+   this.whiskyId = opts.whiskyId
 
    init () {
-     this.whisky = this.store.data.targetWhisky
+     this.whisky = this.store.data.whiskies.find(w =>
+       w.whiskyId === this.whiskyId
+     )
      this.setReviews()
    }
 
    setReviews () {
-     this.reviews = this.store.data.reviews.filter(
-       r => r.whiskyId === this.store.data.targetWhisky.whiskyId
+     this.reviews = this.store.data.reviews.filter(r =>
+       r.whiskyId === this.whiskyId
      )
    }
 
-   this.on('before-mount', () => {
-     ac.activateBackButton()
-     this.setReviews()
-   })
+   /*
+   // 現状毎表示時にmountしなおしているのでなくて良い.
+   // mountではなくshow={t/f}で切り替えの時には役に立つ.
+      updateReviews() {
+        this.setReviews()
+        this.update()
+      }
 
-   this.on('unmount', () => { ac.deactivateBackButton() })
+      this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews)
+      this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateReviews)
+    */
+
+   this.on('before-mount', () => ac.activateBackButton())
+
+   this.on('unmount', () => ac.deactivateBackButton())
 
    /* データ初期化 */
    this.init()
