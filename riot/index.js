@@ -1,7 +1,7 @@
 import route from 'riot-route'
 import riot from 'riot'
 
-import { redirect } from './utils.js'
+import { redirect, getWhiskyId } from './utils.js'
 import ac from './action-creator.js'
 import store from './store.js'
 import StoreMessage from './constants/store-message.js'
@@ -24,7 +24,7 @@ store.one(StoreMessage.STORE_INITED, () => {
     riot.mount('content', 'review-form', {store})
   })
   route('/*', (whiskyIdWithName) => {
-    const whiskyId = parseInt(whiskyIdWithName.slice(0, 1))
+    const whiskyId = getWhiskyId(whiskyIdWithName)
     riot.mount('content', 'review-list', {
       store,
       whiskyId,
