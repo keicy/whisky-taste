@@ -15,7 +15,7 @@ import './whisky-box.tag'
    this.store = opts.store
 
    setWhiskies() {
-     const whiskies = this.store.data.whiskies
+     const whiskies = this.store.data.whiskies.sort((w1, w2) => w1.whiskyName > w2.whiskyName)
      const searchWord = this.store.data.whiskySearchWord
      if (searchWord) {
        this.whiskies = whiskies.filter(
