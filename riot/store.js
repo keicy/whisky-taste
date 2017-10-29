@@ -103,8 +103,8 @@ setActionHandler(
   Action.POST_NEW_WHISKY_WITH_REVIEW,
   StoreMessage.WHISKY_AND_REVIEW_UPDATED,
   newWhiskyWithReview => {
-    store.data.whiskies.push(newWhiskyWithReview.whiskies)
-    store.data.reviews.push(newWhiskyWithReview.reviews)
+    store.data.whiskies.push(newWhiskyWithReview.whisky)
+    store.data.reviews.push(newWhiskyWithReview.review)
   }
 )
 
