@@ -80,7 +80,6 @@ export default riot.observable({
         whisky,
         review,
       }
-      console.log(whiskyWithReview)
       ax.post('/whiskies/reviews', whiskyWithReview)
         .then(res => {
           this.trigger(Action.POST_NEW_WHISKY_WITH_REVIEW, res.data.newWhiskyWithReview)
