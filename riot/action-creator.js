@@ -12,10 +12,6 @@ export default riot.observable({
       })
   },
 
-  setTargetWhisky (whisky) {
-    this.trigger(Action.SET_TARGET_WHISKY, whisky)
-  },
-
   activateWhiskySearch () {
     const isWhiskySearchActive = true
     const whiskySearchWord = ''
@@ -36,11 +32,6 @@ export default riot.observable({
 
   updateWhiskySearchWord (searchWord) {
     this.trigger(Action.UPDATE_WHISKY_SEARCH_WORD, searchWord)
-  },
-
-  removeTargetWhisky () {
-    const rem = null
-    this.trigger(Action.REMOVE_TARGET_WHISKY, rem)
   },
 
   activateBackButton () {
