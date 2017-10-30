@@ -51,14 +51,30 @@ In the demo, this application is running in Heroku, using [PostgreSQL](https://w
 
 ## Requirement / 動作環境
 
-TODO ポスグレ
-
 - Java8
-- Node
+- Node v6.11
+- PostgreSQL 9.5
 - Google Churome (recommended)
-- PostgresQL ???
 
 ## Usage / 動かし方
+
+### Preparation / 準備
+
+1. Create new Database named 'whisky_taste' at PostgreSQL
+2. Set your environment variable on your PC
+   - `DEV_DB_USER` : Set your PostgreSQL user (Make sure that the user can access created 'whisky_taste' databese!)
+   - `DEV_DB_PSWD` : Set your user's password
+3. Reload environment variable on your console
+
+ <!-- break list -->
+
+1. PostgreSQLにてデータベース 'whisky_taste' を新規作成
+2. お手元のマシンに環境変数を設定
+   - `DEV_DB_USER` : あなたのPostgreSQLユーザー (作成した 'whisky_taste' データベースへのアクセス権があることを確認してください!)
+   - `DEV_DB_PSWD` : あなたのPostgreSQLユーザーのパスワード
+3. コンソールにて環境変数を再読み込み
+
+### Run / 実行
 
 ```
 git clone git@github.com:keicy/whisky-taste.git
@@ -67,6 +83,8 @@ npm init
 npm run build
 sbt run
 ```
+
+### Access / サイトアクセス
 
 Then, Access `http://localhost:9000` in your browser (Google-Chrome is recommend).  
   
