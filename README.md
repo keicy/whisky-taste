@@ -19,8 +19,8 @@ PlayとSlickの特徴を活かしてAPIの処理を非同期に行うことで�
 
 ### Front-end / フロントエンド
 
-Using Riot.js, we can do component-based UI development. Adopt Flux to control data flow, we can deal with all global states at Store, remove them from each components. So we are able to keep our components as low coupling.
-
+Using Riot.js, we can do component-based UI development. Adopt Flux to control data flow, we can deal with all global states at Store, remove them from each components. So we are able to keep our components as low coupling.  
+  
 Riot.jsを使用してコンポーネントベースの開発を行いました.データフローにFluxを採用することでアプリケーションのグローバルな状態をStoreに集約し各コンポーネントから排除,コンポーネント間の疎結合を担保しました.  
 
 ## Demo / デモ
@@ -29,7 +29,7 @@ Riot.jsを使用してコンポーネントベースの開発を行いました.
   
 In the demo, this application is running in Heroku, using [PostgreSQL](https://www.postgresql.org/).  
   
-デモ環境(Heroku)ではDBに[PostgreSQL](https://www.postgresql.org/)を使用しています.
+デモ環境(Heroku)ではDBに[PostgreSQL](https://www.postgresql.org/)を使用しています.  
 
 ## Technical elements / 使用技術
 
@@ -71,59 +71,3 @@ sbt run
 Then, Access `http://localhost:9000` in your browser (Google-Chrome is recommend).  
   
 ブラウザ(Google-Chrome 推奨)から `http://localhost:9000` にアクセスしてください.  
-
-
-
-
-
-
-
-
-
-
-
-=========
-
-
-## 参考情報
-
-### Slick
-
-- http://krrrr38.github.io/slick-doc-ja/v3.0.out/ORM%E3%81%8B%E3%82%89Slick%E3%82%92%E5%88%A9%E7%94%A8%E3%81%99%E3%82%8B%E4%BA%BA%E3%81%B8.html
-
-
-## 開発コマンド
-
-### H2
-
-| 操作 | コマンド | 補足 |
-|:---|:---|:---|
-| コンソール | `sbt` > 'h2-browser' | SBTコンソール内から実行しないと正常起動できない（`sbt h2-browser` ではダメ） |
-|  |  |  |
-
-### Postgres GUI
-
-```
-cd ~/.pgadmin4 && source bin/activate # virtual environment にログイン
-python lib/python2.7/site-packages/pgadmin4/pgAdmin4.py # 起動
-```
-
-
-### Play
-
-| 操作 | コマンド | 補足 |
-|:---|:---|:---|
-| ウォッチ | `sbt ~compile` |  |
-| 実行 | `sbt run` | ウォッチコマンドを別ターミナルにて実行しておくと良い |
-|  |  |  |
-|  |  |  |
-
-### JS
-
-| 操作 | コマンド | 補足 |
-|:---|:---|:---|
-| ウォッチ | `npm run w` |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
-|  |  |  |
