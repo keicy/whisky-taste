@@ -12,16 +12,22 @@ A WEB application sample for posting tasting reviews of whiskies.
 - PlayとSlickの特徴を活かしてAPIの処理を非同期に行うことでサーバーリソースを有効活用するようにしました.
 - Riot.jsを使用してコンポーネントベースのUI開発を行いました.
 - フロントエンドのデータフロー制御にFluxを採用することでアプリケーションのグローバルな状態をStoreに集約し各コンポーネントから排除,コンポーネント間の疎結合を担保しました.
+- レスポンシブデザインによりスマートフォンブラウザでの表示に対応しています.
   
 Using [PostgreSQL](https://www.postgresql.org/) at DB,[Play(Scala)](https://www.playframework.com/documentation/2.5.x/ScalaHome) at back-end, [Riot.js](http://riotjs.com/) and [Bulma](https://bulma.io/) at front-end.
 
 - Using Play and Slick, we can make our API functions asynchronous and then save our server resources.
 - Using Riot.js, we can do component-based UI development.
 - Adopt Flux to control data flow, we can deal with all global states at Store, remove them from each components. So we are able to keep our components as low coupling.
+- It is compatible with viewing on your smartphone by responsive CSS.
 
 ## デモ / Demo
 
 [https://whisky-taste.herokuapp.com](https://whisky-taste.herokuapp.com)  
+  
+**※ サイト内の画面から自由にレビュー投稿していただいて構いません!**  
+  
+**Note: In the site you are free to post new reviews!**
 
 ## 使用技術 / Technical elements
 
@@ -79,6 +85,6 @@ sbt run
 
 ### サイトアクセス / Access
 
-ブラウザ(Google-Chrome 推奨)から `http://localhost:9000` にアクセスしてください.  
+WEBブラウザ(Google-Chrome 推奨)から `http://localhost:9000` にアクセスしてください.  
   
-Then, Access `http://localhost:9000` in your browser (Google-Chrome is recommend).  
+Access `http://localhost:9000` in WEB browser (Google-Chrome is recommended).
