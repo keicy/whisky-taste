@@ -7,13 +7,13 @@ A WEB application sample for posting tasting reviews of whiskies.
 
 ## 概要 / Description
 
-データベースは[PostgreSQL](https://www.postgresql.org/),バックエンドは[Play(Scala)](https://www.playframework.com/documentation/2.5.x/ScalaHome),フロントエンドは[Riot.js](http://riotjs.com/)と[Bulma](https://bulma.io/)で構築しています.  
+データベースは[PostgreSQL](https://www.postgresql.org/),バックエンド(サーバーサイド)は[Play(Scala)](https://www.playframework.com/documentation/2.5.x/ScalaHome),フロントエンドは[Riot.js](http://riotjs.com/)と[Bulma](https://bulma.io/)で構築しています.
 
 - PlayとSlickの特徴を活かしてAPIの処理を非同期に行うことでサーバーリソースを有効活用できるようにしました.
 - Riot.jsを使用してコンポーネントベースの開発を行いました.
 - データフローにFluxを採用することでアプリケーションのグローバルな状態をStoreに集約し各コンポーネントから排除,コンポーネント間の疎結合を担保しました.
   
-Using [Play(Scala)](https://www.playframework.com/documentation/2.5.x/ScalaHome) at back-end, [Riot.js](http://riotjs.com/) and [Bulma](https://bulma.io/) at front-end.  
+Using [PostgreSQL](https://www.postgresql.org/) at DB,[Play(Scala)](https://www.playframework.com/documentation/2.5.x/ScalaHome) at back-end, [Riot.js](http://riotjs.com/) and [Bulma](https://bulma.io/) at front-end.
 
 - Using Play and Slick, we can make our API functions asynchronous and then save our server resources.
 - Using Riot.js, we can do component-based UI development.
@@ -53,17 +53,17 @@ Using [Play(Scala)](https://www.playframework.com/documentation/2.5.x/ScalaHome)
 
 ### 準備 / Preparation
 
-1. PostgreSQLにてデータベース 'whisky_taste' を新規作成
+1. PostgreSQLにてデータベース `whisky_taste` を新規作成
 2. お手元のマシンに環境変数を設定
-   - `DEV_DB_USER` : あなたのPostgreSQLユーザー (作成した 'whisky_taste' データベースへのアクセス権があることを確認してください!)
+   - `DEV_DB_USER` : あなたのPostgreSQLユーザー (作成した `whisky_taste` データベースへのアクセス権があることを確認してください)
    - `DEV_DB_PSWD` : あなたのPostgreSQLユーザーのパスワード
 3. コンソールにて環境変数を再読み込み
 
  <!-- break list -->
 
-1. Create new Database named 'whisky_taste' at PostgreSQL
+1. Create new Database named `whisky_taste` at PostgreSQL
 2. Set your environment variable on your PC
-   - `DEV_DB_USER` : Set your PostgreSQL user (Make sure that the user can access created 'whisky_taste' databese!)
+   - `DEV_DB_USER` : Set your PostgreSQL user (Make sure that the user can access created `whisky_taste` databese)
    - `DEV_DB_PSWD` : Set your user's password
 3. Reload environment variable on your console
 
