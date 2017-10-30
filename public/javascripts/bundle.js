@@ -3432,6 +3432,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var riot$1 = unwrapExports(riot_1);
 
 var URL_ROOT = '#'; /* RouterのURLルート */
+var URL_SEPARETION = '_'; /* URLの区切り文字 */
 
 /* 相対URL取得 */
 var getURL = function (url) {
@@ -3444,8 +3445,14 @@ var getURL = function (url) {
 var redirect = function (url) {
   if ( url === void 0 ) url = '';
 
-  window.location.href = URL_ROOT + url;
+  return route('/' + url);
 };
+
+/* whisky からレビュー一覧ページのURLを取得 */
+var getReviewListURL = function (whisky) { return '/' + whisky.whiskyId + URL_SEPARETION + whisky.whiskyName.replace(/ /g, URL_SEPARETION); };
+
+/* 'whiskyId_name' のURL文字列からwhiskyIdを取得 */
+var getWhiskyId = function (whiskyIdWithName) { return parseInt(whiskyIdWithName.split(URL_SEPARETION)[0]); };
 
 var bind = function bind(fn, thisArg) {
   return function wrap() {
@@ -4757,10 +4764,14 @@ var axios = axios_1;
 var Action = {
 //  GET_ALL_REVIEWS: Symbol('GET_ALL_REVIEWS'),
   INIT_STORE: Symbol('INIT_STORE'),
-  SET_TARGET_WHISKY: Symbol('SET_TARGET_WHISKY'),
-  REMOVE_TARGET_WHISKY: Symbol('REMOVE_TARGET_WHISKY'),
-  START_REVIEWING: Symbol('START_REVIEWING'),
-  QUIT_REVIEWING: Symbol('QUIT_REVIEWING'),
+  ACTIVATE_WHISKY_SEARCH: Symbol('ACTIVATE_WHISKY_SEARCH'),
+  DEACTIVATE_WHISKY_SEARCH: Symbol('DEACTIVATE_WHISKY_SEARCH'),
+  UPDATE_WHISKY_SEARCH_WORD: Symbol('UPDATE_WHISKY_SEARCH_WORD'),
+  ACTIVATE_BACK_BUTTON: Symbol('ACTIVATE_BACK_BUTTON'),
+  DEACTIVATE_BACK_BUTTON: Symbol('DEACTIVATE_BACK_BUTTON'),
+  SAVE_URL: Symbol('SAVE_URL'),
+  ENTER_REVIEWING: Symbol('ENTER_REVIEWING'),
+  EXIT_REVIEWING: Symbol('EXIT_REVIEWING'),
   POST_NEW_REVIEW: Symbol('POST_NEW_REVIEW'),
   POST_NEW_WHISKY_WITH_REVIEW: Symbol('POST_NEW_WHISKY_WITH_REVIEW'),
 };
@@ -4775,12 +4786,36 @@ var ac = riot$1.observable({
       });
   },
 
-  setTargetWhisky: function setTargetWhisky (whisky) {
-    this.trigger(Action.SET_TARGET_WHISKY, whisky);
+  activateWhiskySearch: function activateWhiskySearch () {
+    var isWhiskySearchActive = true;
+    var whiskySearchWord = '';
+    this.trigger(Action.ACTIVATE_WHISKY_SEARCH, {
+      isWhiskySearchActive: isWhiskySearchActive,
+      whiskySearchWord: whiskySearchWord,
+    });
   },
 
-  removeTargetWhisky: function removeTargetWhisky () {
-    this.trigger(Action.REMOVE_TARGET_WHISKY);
+  deactivateWhiskySearch: function deactivateWhiskySearch () {
+    var isWhiskySearchActive = false;
+    var whiskySearchWord = '';
+    this.trigger(Action.DEACTIVATE_WHISKY_SEARCH, {
+      isWhiskySearchActive: isWhiskySearchActive,
+      whiskySearchWord: whiskySearchWord,
+    });
+  },
+
+  updateWhiskySearchWord: function updateWhiskySearchWord (searchWord) {
+    this.trigger(Action.UPDATE_WHISKY_SEARCH_WORD, searchWord);
+  },
+
+  activateBackButton: function activateBackButton () {
+    var isBackButtonActive = true;
+    this.trigger(Action.ACTIVATE_BACK_BUTTON, isBackButtonActive);
+  },
+
+  deactivateBackButton: function deactivateBackButton () {
+    var isBackButtonActive = false;
+    this.trigger(Action.DEACTIVATE_BACK_BUTTON, isBackButtonActive);
   },
 
   /*
@@ -4821,7 +4856,6 @@ var ac = riot$1.observable({
         whisky: whisky,
         review: review$1,
       };
-      console.log(whiskyWithReview);
       axios.post('/whiskies/reviews', whiskyWithReview)
         .then(function (res) {
           this$1.trigger(Action.POST_NEW_WHISKY_WITH_REVIEW, res.data.newWhiskyWithReview);
@@ -4829,24 +4863,30 @@ var ac = riot$1.observable({
     }
   },
 
-  startReviewing: function startReviewing () {
+  saveURL: function saveURL () {
     var url = getURL();
-    var isReviewing = true;
-    this.trigger(Action.START_REVIEWING, {url: url, isReviewing: isReviewing});
+    this.trigger(Action.SAVE_URL, url);
   },
 
-  quitReviewing: function quitReviewing () {
+  enterReviewing: function enterReviewing () {
+    var isReviewing = true;
+    this.trigger(Action.ENTER_REVIEWING, isReviewing);
+  },
+
+  exitReviewing: function exitReviewing () {
     var isReviewing = false;
-    this.trigger(Action.QUIT_REVIEWING, isReviewing);
+    this.trigger(Action.EXIT_REVIEWING, isReviewing);
   },
 });
 
 var StoreMessage = {
   STORE_INITED: Symbol('STORE_INITED'),
-  TARGET_WHISKY_SET: Symbol('TARGET_WHISKY_SET'),
-  TARGET_WHISKY_REMOVED: Symbol('TARGET_WHISKY_REMOVED'),
-  REVIEWING_READY: Symbol('REVIEWING_READY'),
-  REVIEWING_QUITED: Symbol('REVIEWING_QUITED'),
+  WHISKY_SEARCH_SET: Symbol('WHISKY_SEARCH_SET'),
+  WHISKY_SEARCH_WORD_UPDATED: Symbol('WHISKY_SEARCH_WORD_UPDATED'),
+  BACK_BUTTON_SET: Symbol('BACK_BUTTON_SET'),
+  URL_SAVED: Symbol('URL_SAVED'),
+  REVIEWING_ENTERED: Symbol('REVIEWING_ENTERED'),
+  REVIEWING_EXITED: Symbol('REVIEWING_EXITED'),
   REVIEWS_UPDATED: Symbol('REVIEWS_UPDATED'),
   WHISKY_AND_REVIEW_UPDATED: Symbol('WHISKY_AND_REVIEW_UPDATED'),
 };
@@ -4868,7 +4908,7 @@ function setActionHandler (
 ) {
   ac.on(action, function (data) {
     updateFn(data);
-    store.trigger(storeMsg);
+    store.trigger(storeMsg, data);
   });
 }
 
@@ -4879,15 +4919,39 @@ setActionHandler(
 );
 
 setActionHandler(
-  Action.SET_TARGET_WHISKY,
-  StoreMessage.TARGET_WHISKY_SET,
-  function (whisky) { store.data.targetWhisky = whisky; }
+  Action.ACTIVATE_WHISKY_SEARCH,
+  StoreMessage.WHISKY_SEARCH_SET,
+  function (activate) {
+    store.data.isWhiskySearchActive = activate.isWhiskySearchActive;
+    store.data.whiskySearchWord = activate.whiskySearchWord;
+  }
 );
 
 setActionHandler(
-  Action.REMOVE_TARGET_WHISKY,
-  StoreMessage.TARGET_WHISKY_REMOVED,
-  function () { store.data.targetWhisky = null; }
+  Action.DEACTIVATE_WHISKY_SEARCH,
+  StoreMessage.WHISKY_SEARCH_SET,
+  function (deactivate) {
+    store.data.isWhiskySearchActive = deactivate.isWhiskySearchActive;
+    store.data.whiskySearchWord = deactivate.whiskySearchWord;
+  }
+);
+
+setActionHandler(
+  Action.UPDATE_WHISKY_SEARCH_WORD,
+  StoreMessage.WHISKY_SEARCH_WORD_UPDATED,
+  function (searchWord) { store.data.whiskySearchWord = searchWord; }
+);
+
+setActionHandler(
+  Action.ACTIVATE_BACK_BUTTON,
+  StoreMessage.BACK_BUTTON_SET,
+  function (t) { store.data.isBackButtonActive = t; }
+);
+
+setActionHandler(
+  Action.DEACTIVATE_BACK_BUTTON,
+  StoreMessage.BACK_BUTTON_SET,
+  function (f) { store.data.isBackButtonActive = f; }
 );
 
 /*
@@ -4900,20 +4964,21 @@ setActionHandler(
  */
 
 setActionHandler(
-  Action.START_REVIEWING,
-  StoreMessage.REVIEWING_READY,
-  function (startReview) {
-    store.data.url = startReview.url;
-    store.data.isReviewing = startReview.isReviewing;
-  }
+  Action.SAVE_URL,
+  StoreMessage.URL_SAVED,
+  function (url) { store.data.url = url; }
 );
 
 setActionHandler(
-  Action.QUIT_REVIEWING,
-  StoreMessage.REVIEWING_QUITED,
-  function (quitReview) {
-    store.data.isReviewing = quitReview;
-  }
+  Action.ENTER_REVIEWING,
+  StoreMessage.REVIEWING_ENTERED,
+  function (t) { store.data.isReviewing = t; }
+);
+
+setActionHandler(
+  Action.EXIT_REVIEWING,
+  StoreMessage.REVIEWING_EXITED,
+  function (f) { store.data.isReviewing = f; }
 );
 
 setActionHandler(
@@ -4926,51 +4991,107 @@ setActionHandler(
   Action.POST_NEW_WHISKY_WITH_REVIEW,
   StoreMessage.WHISKY_AND_REVIEW_UPDATED,
   function (newWhiskyWithReview) {
-    store.data.whiskies.push(newWhiskyWithReview.whiskies);
-    store.data.reviews.push(newWhiskyWithReview.reviews);
+    store.data.whiskies.push(newWhiskyWithReview.whisky);
+    store.data.reviews.push(newWhiskyWithReview.review);
   }
 );
 
-riot$1.tag2('eye-catch', '<section onclick="{gotoTop}" class="hero is-primary"> <div class="hero-body"> <div class="container"> <h1 class="title"> Whisky Taste </h1> <h2 class="subtitle"> Tasting Reviews For You </h2> </div> </div> </section>', '', '', function(opts) {
+riot$1.tag2('eye-catch', '<section onclick="{gotoTop}" class="hero is-primary"> <div class="hero-body"> <div class="container"> <h1 class="title"> Whisky Taste </h1> <h2 class="subtitle"> Tasting Reviews For You </h2> </div> </div> </section>', 'eye-catch { cursor: pointer; } @media (max-width: 768px) { eye-catch .hero-body,[data-is="eye-catch"] .hero-body{ padding: 1rem 1.5rem; } }', '', function(opts) {
    this.gotoTop = function () {
      redirect();
    }.bind(this);
 });
 
-riot$1.tag2('review-button', '<button class="button" onclick="{startReviewing}" disabled="{disabled}"> レビューを書く </button>', '', '', function(opts) {
+riot$1.tag2('review-button', '<div> <button class="button is-link" onclick="{saveURL}" hide="{isReviewing}"> レビューを書く </button> <button class="button" onclick="{returnBeforePage}" show="{isReviewing}"> レビューをやめる </button> </div>', '', '', function(opts) {
    this.store = opts.store;
 
-   this.startReviewing = function () {
-     ac.startReviewing();
+   this.saveURL = function () {
+     ac.saveURL();
+   }.bind(this);
+
+   this.returnBeforePage = function () {
+     redirect(this.store.data.url);
    }.bind(this);
 
    this.showReviewForm = function () {
-     this.toggleActivate ();
      redirect('/new-review');
    }.bind(this);
 
    this.toggleActivate = function () {
-     this.disabled = this.store.data.isReviewing;
+     this.isReviewing = this.store.data.isReviewing;
      this.update();
    }.bind(this);
 
-   this.store.on(StoreMessage.REVIEWING_READY, this.showReviewForm);
-   this.store.on(StoreMessage.REVIEWING_QUITED, this.toggleActivate);
+   this.store.on(StoreMessage.URL_SAVED, this.showReviewForm);
+   this.store.on(StoreMessage.REVIEWING_ENTERED, this.toggleActivate);
+   this.store.on(StoreMessage.REVIEWING_EXITED, this.toggleActivate);
 
-   this.disabled = false;
+   this.isReviewing = false;
 });
 
-riot$1.tag2('tool-bar', '<nav class="level"> <div class="level-left"> <review-button store="{opts.store}"></review-button> </div> <div class="level-right"> <div class="field has-addons"> <p class="control"> <input class="input" type="text" placeholder="Find a post"> </p> <p class="control"> <button class="button"> Search </button> </p> </div> </div> </nav>', '', '', function(opts) {
+riot$1.tag2('whisky-search', '<div class="wrapper control"> <input ref="whiskySearch" type="text" placeholder="ウイスキー検索" class="input" oninput="{updateWhiskySearchWord}"> </div>', 'whisky-search .wrapper,[data-is="whisky-search"] .wrapper{ margin-left: 0.1em; }', 'show="{isActive}"', function(opts) {
+   this.store = opts.store;
+
+   this.updateWhiskySearchWord = function () {
+     var searchWord = this.refs.whiskySearch.value;
+     ac.updateWhiskySearchWord(searchWord);
+   }.bind(this);
+
+   this.toggleActivate = function () {
+     this.refs.whiskySearch.value = '';
+     this.isActive = this.store.data.isWhiskySearchActive;
+     this.update();
+   }.bind(this);
+
+   this.store.on(StoreMessage.WHISKY_SEARCH_SET, this.toggleActivate);
+
+   this.isActive = false;
 });
 
-riot$1.tag2('app-layout', '<eye-catch></eye-catch> <section class="columns"> <div class="column is-offset-2 is-8 is-offset-2"> <tool-bar store="{opts.store}"></tool-bar> <content></content> <post-form></post-form> <item-list></item-list> </div> </section>', '', '', function(opts) {
+riot$1.tag2('back-button', '<button class="button" onclick="{backToWhiskyList}"> TOPに戻る </button>', '', 'show="{isActive}"', function(opts) {
+   this.store = opts.store;
+
+   this.setIsActive = function() {
+     this.isActive = this.store.data.isBackButtonActive;
+   }.bind(this);
+
+   this.updateIsActive = function() {
+     this.setIsActive();
+     this.update();
+   }.bind(this);
+
+   this.backToWhiskyList = function() {
+     redirect();
+   }.bind(this);
+
+   this.store.on(StoreMessage.BACK_BUTTON_SET, this.updateIsActive);
+
+   this.setIsActive();
 });
 
-riot$1.tag2('whisky-list', '<ul> <li each="{whiskies}" onclick="{parent.gotoReviewList}" class="box"> <div class="title is-4"> {whiskyName} </div> <div class="columns"> <div class="column is-2"> 度数: {strength}％ </div> <div class="column"> 蒸留所: {distilleryName} </div> <div class="column"> 原産: {country} </div> <div class="column"> 産地: {region} </div> </div> </li> </ul>', '', '', function(opts) {
+riot$1.tag2('tool-bar', '<nav> <div> <review-button store="{opts.store}"></review-button> </div> <div> <whisky-search store="{opts.store}"></whisky-search> <back-button store="{opts.store}"></back-button> </div> </nav>', 'tool-bar nav,[data-is="tool-bar"] nav{ margin-bottom: 0.5em; display: -webkit-box; display: -ms-flexbox; display: flex; -webkit-box-pack: justify; -ms-flex-pack: justify; justify-content: space-between; } tool-bar .button,[data-is="tool-bar"] .button,tool-bar .input,[data-is="tool-bar"] .input{ border-top: none; border-radius: 0 0 5px 5px; } @media (max-width: 768px) { tool-bar nav,[data-is="tool-bar"] nav{ margin-bottom: 1em; } }', '', function(opts) {
+});
+
+riot$1.tag2('app-layout', '<eye-catch></eye-catch> <section class="columns"> <div class="column is-offset-2 is-8 is-offset-2"> <tool-bar store="{opts.store}"></tool-bar> <div id="wrapper"> <content></content> </div> </div> </section>', '@media (max-width: 768px) { app-layout #wrapper,[data-is="app-layout"] #wrapper{ margin: 0 0.3em; } }', '', function(opts) {
+});
+
+riot$1.tag2('whisky-box', '<div class="box"> <div id="title" class="title is-4"> {whisky.whiskyName} </div> <div class="columns"> <div class="column is-2"> 度数: {whisky.strength ? whisky.strength + \'%\' : \'-\'} </div> <div class="column"> 蒸留所: {whisky.distilleryName || \'-\'} </div> <div class="column"> 原産: {whisky.country || \'-\'} </div> <div class="column"> 産地: {whisky.region || \'-\'} </div> </div> </div>', 'whisky-box .box,[data-is="whisky-box"] .box{ margin-bottom: 1em; } whisky-box #title,[data-is="whisky-box"] #title{ margin-bottom: 16px; margin-bottom: 1rem; } @media (max-width: 768px) { whisky-box .column,[data-is="whisky-box"] .column{ padding: 0.25rem 1.75rem; } }', '', function(opts) {
+   this.whisky = opts.whisky;
+});
+
+riot$1.tag2('whisky-list', '<ul> <li each="{whiskies}" onclick="{parent.gotoReviewList}"> <whisky-box whisky="{this}"></whisky-box> </li> </ul>', 'whisky-list .box,[data-is="whisky-list"] .box{ cursor: pointer; } whisky-list li:not(:last-child),[data-is="whisky-list"] li:not(:last-child){ margin-bottom: 0.5em; }', '', function(opts) {
    this.store = opts.store;
 
    this.setWhiskies = function() {
-     this.whiskies = this.store.data.whiskies;
+     var whiskies = this.store.data.whiskies.sort(function (w1, w2) { return w1.whiskyName > w2.whiskyName; });
+     var searchWord = this.store.data.whiskySearchWord;
+     if (searchWord) {
+       this.whiskies = whiskies.filter(
+         function (w) { return w.whiskyName.toLowerCase().includes(searchWord.toLowerCase()); }
+       );
+     } else {
+       this.whiskies = whiskies;
+     }
    }.bind(this);
 
    this.updateWhiskies = function() {
@@ -4980,17 +5101,21 @@ riot$1.tag2('whisky-list', '<ul> <li each="{whiskies}" onclick="{parent.gotoRevi
 
    this.gotoReviewList = function(e) {
      var whisky = e.item;
-     ac.setTargetWhisky(whisky);
-     redirect('/' + whisky.whiskyName.replace(/ /g, '_'));
+     redirect(getReviewListURL(whisky));
    }.bind(this);
 
-   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.updateWhiskies);
-   this.on('before-mount', ac.removeTargetWhisky);
+   this.store.on(StoreMessage.WHISKY_SEARCH_WORD_UPDATED, this.updateWhiskies);
+
+   this.on('before-mount', function () { return ac.activateWhiskySearch(); });
+
+   this.on('unmount', function () { return ac.deactivateWhiskySearch(); });
 
    this.setWhiskies();
 });
 
-riot$1.tag2('review-form', '<div> <div class="field"> <label class="label">ボトル名</label> <div class="control"> <input ref="whiskyName" type="text" list="whiskies" placeholder="ダブルクリックで選択/入力で新規追加" class="input" required onchange="{whiskyNameSelected}"> <datalist id="whiskies"> <virtual each="{whiskies}"> <option>{whiskyName}</option> </virtual> </datalist> </div> </div> <div class="field"> <label class="label">蒸留所</label> <div class="control"> <input ref="distilleryName" type="text" placeholder="蒸留所名" class="input" readonly="{knownWhiskyId}"> </div> </div> <div class="field"> <label class="label">原産国</label> <div class="control"> <input ref="country" type="text" placeholder="原産国名" class="input" readonly="{knownWhiskyId}"> </div> </div> <div class="field"> <label class="label">原産地域</label> <div class="control"> <input ref="region" type="text" placeholder="原産地域" class="input" readonly="{knownWhiskyId}"> </div> </div> <div class="field"> <label class="label">度数</label> <div class="control"> <input ref="strength" step="0.1" placeholder="47.3" class="input" readonly="{knownWhiskyId}" type="number"> </div> </div> <div class="field"> <label class="label">評価点</label> <input ref="score" type="range" name="score" min="1" max="20" value="10" step="1" required oninput="{showScore}"> <span>{score}</span> </div> <div class="field"> <label class="label">テイスティングコメント</label> <div class="control"> <input ref="comment" type="text" class="textarea"> </div> </div> <div class="field is-grouped"> <p class="control"> <a class="button is-link" onclick="{postNewReview}"> 投稿する </a> </p> <p class="control"> <a class="button" onclick="{quitReviewing}"> やめる </a> </p> </div> </div>', '', '', function(opts) {
+riot$1.tag2('review-form', '<form onsubmit="{postNewReview}"> <div class="field"> <label class="label">ボトル名</label> <div class="control"> <input ref="whiskyName" type="text" list="whiskies" placeholder="ダブルクリックで選択/入力で新規追加" class="input" required oninput="{whiskyNameSelected}"> <datalist id="whiskies"> <option each="{whiskies}"> {whiskyName} </option> </datalist> </div> </div> <div class="field"> <label class="label">蒸留所</label> <div class="control"> <input ref="distilleryName" type="text" placeholder="蒸留所名" class="input" readonly="{knownWhiskyId}"> </div> </div> <div class="field"> <label class="label">原産国</label> <div class="control"> <input ref="country" type="text" placeholder="原産国名" class="input" readonly="{knownWhiskyId}"> </div> </div> <div class="field"> <label class="label">原産地域</label> <div class="control"> <input ref="region" type="text" placeholder="原産地域" class="input" readonly="{knownWhiskyId}"> </div> </div> <div class="field"> <label class="label">度数</label> <div class="control"> <input ref="strength" step="0.1" pattern="^\\d{1,2}(\\.\\d)?$" placeholder="47.3" class="input" readonly="{knownWhiskyId}" type="number"> </div> </div> <div class="field"> <label class="label">評価点</label> <div id="score"> <input ref="score" type="range" name="score" min="1" max="20" value="10" step="1" required oninput="{showScore}"> <div id="score-display"> {score} </div> </div> </div> <div class="field"> <label class="label">テイスティングコメント</label> <div class="control"> <textarea ref="comment" class="textarea"> </textarea> </div> </div> <div class="field"> <p class="control"> <input type="submit" value="投稿する" class="button is-link"> </p> </div> </form>', 'review-form #score,[data-is="review-form"] #score{ display: -webkit-box; display: -ms-flexbox; display: flex; } review-form #score-display,[data-is="review-form"] #score-display{ font-size: 1.3em; margin-left: 0.4em; font-weight: bold; }', '', function(opts) {
+   var this$1 = this;
+
    this.store = opts.store;
 
    this.initScore = function () {
@@ -5040,7 +5165,8 @@ riot$1.tag2('review-form', '<div> <div class="field"> <label class="label">ボ�
      this.refs.comment.value = '';
    }.bind(this);
 
-   this.postNewReview = function () {
+   this.postNewReview = function (e) {
+     e.preventDefault();
      var whiskyId = this.knownWhiskyId;
      var whiskyName =  this.refs.whiskyName.value;
      var distilleryName = this.refs.distilleryName.value;
@@ -5062,45 +5188,56 @@ riot$1.tag2('review-form', '<div> <div class="field"> <label class="label">ボ�
      });
    }.bind(this);
 
-   this.quitReviewing = function () {
-
-     ac.quitReviewing();
+   this.gotoReviewList = function (review) {
+     var whiskyId = review.whiskyId;
+     var whiskyName = this.store.data.whiskies.find(
+       function (w) { return w.whiskyId === whiskyId; }
+     ).whiskyName;
+     redirect(getReviewListURL({
+       whiskyId: whiskyId,
+       whiskyName: whiskyName,
+     }));
    }.bind(this);
 
-   this.returnBeforePage = function () {
-     console.log(this.store.data.url);
-     redirect(this.store.data.url);
+   this.gotoReviewList_ = function (whisky) {
+     redirect(getReviewListURL(whisky));
    }.bind(this);
 
-   this.store.on(StoreMessage.REVIEWS_UPDATED, this.quitReviewing);
-   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED, this.quitReviewing);
-   this.store.on(StoreMessage.REVIEWING_QUITED, this.returnBeforePage);
+   this.store.on(StoreMessage.REVIEWS_UPDATED,
+                 function (review) { return this$1.gotoReviewList(review); });
+
+   this.store.on(StoreMessage.WHISKY_AND_REVIEW_UPDATED,
+                 function (newWhiskyWithReview) { return this$1.gotoReviewList_(newWhiskyWithReview.whisky); });
+
+   this.on('before-mount', function () { return ac.enterReviewing(); });
+
+   this.on('unmount', function () { return ac.exitReviewing(); });
 
    this.init();
 });
 
-riot$1.tag2('review-list', '<div> <table class="table is-fullwidth"> <thead> <tr> <td>評価点</td> <td>テイスティングコメント</td> </tr> </thead> <tbody> <tr each="{reviews}"> <td>{score} / 20</td> <td>{comment}</td> </tr> </tbody> </table> </div>', '', '', function(opts) {
+riot$1.tag2('review-list', '<div> <whisky-box whisky="{whisky}"></whisky-box> <table class="table is-fullwidth"> <thead> <tr> <td class="score">評価点<br>(20点)</td> <td>テイスティングコメント</td> </tr> </thead> <tbody> <tr each="{reviews}"> <td class="score">{score}</td> <td>{comment}</td> </tr> </tbody> </table> </div>', 'review-list .score,[data-is="review-list"] .score{ width: 5em; text-align: center; } review-list tbody .score,[data-is="review-list"] tbody .score{ font-weight: bold; font-size: 1.25em; padding: 0.25em 0.5em; vertical-align: middle; }', '', function(opts) {
    this.store = opts.store;
+   this.whiskyId = opts.whiskyId;
 
    this.init = function () {
-     this.whisky = this.store.data.targetWhisky;
+     var this$1 = this;
+
+     this.whisky = this.store.data.whiskies.find(function (w) { return w.whiskyId === this$1.whiskyId; }
+     );
      this.setReviews();
    }.bind(this);
 
-   this.setReviews = function() {
+   this.setReviews = function () {
      var this$1 = this;
 
-     this.reviews = this.store.data.reviews.filter(
-       function (r) { return r.whiskyId === this$1.store.data.targetWhisky.whiskyId; }
+     this.reviews = this.store.data.reviews.filter(function (r) { return r.whiskyId === this$1.whiskyId; }
      );
    }.bind(this);
 
-   this.updateReviews = function() {
-     this.setReviews();
-     this.update();
-   }.bind(this);
+   this.on('before-mount', function () { return ac.activateBackButton(); });
 
-   this.store.on(StoreMessage.REVIEWS_UPDATED, this.updateReviews);
+   this.on('unmount', function () { return ac.deactivateBackButton(); });
 
    this.init();
 });
@@ -5113,17 +5250,19 @@ store.one(StoreMessage.STORE_INITED, function () {
   route('/', function () {
     riot$1.mount('content', 'whisky-list', {store: store});
   });
-  // TODO /reviews/new ?
   route('/new-review', function () {
     riot$1.mount('content', 'review-form', {store: store});
   });
-  // TODO もう少し良くならないか？
-  route('/*', function (whiskyName) {
-    riot$1.mount('content', 'review-list', {store: store});
+  route('/*', function (whiskyIdWithName) {
+    var whiskyId = getWhiskyId(whiskyIdWithName);
+    riot$1.mount('content', 'review-list', {
+      store: store,
+      whiskyId: whiskyId,
+    });
   });
 
   route.start(true);
-  redirect();
+  // redirect()
 });
 
 }());
