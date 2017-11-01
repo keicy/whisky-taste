@@ -23,7 +23,7 @@ Using [PostgreSQL](https://www.postgresql.org/) at DB,[Play(Scala)](https://www.
 
 ## デモ / Demo
 
-[https://whisky-taste.herokuapp.com](https://whisky-taste.herokuapp.com)  
+[https://whisky-taste.herokuapp.com](https://whisky-taste.herokuapp.com) (Google-Chrome 推奨 / Google-Chrome is recommended)
   
 **※ サイト内の画面から自由にレビュー投稿していただいて構いません!**  
   
